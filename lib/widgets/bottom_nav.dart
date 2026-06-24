@@ -6,10 +6,12 @@ import '../screens/profile/profile_screen.dart';
 
 class BottomNav extends StatefulWidget {
   final String username;
+  final String email;
 
   const BottomNav({
     super.key,
     required this.username,
+    required this.email,
   });
 
   @override
@@ -26,9 +28,16 @@ class _BottomNavState extends State<BottomNav> {
     super.initState();
 
     pages = [
-      HomeScreen(username: widget.username),
+      HomeScreen(
+        username: widget.username,
+      ),
+
       const ExploreScreen(),
-      const ProfileScreen(),
+
+      ProfileScreen(
+        username: widget.username,
+        email: widget.email,
+      ),
     ];
   }
 

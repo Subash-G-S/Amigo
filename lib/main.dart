@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/auth/login_screen.dart';
+import 'screens/splash/splash_screen.dart';
 
 void main() {
   runApp(const AmigoApp());
@@ -18,7 +19,7 @@ class AmigoApp extends StatelessWidget {
         useMaterial3: true,
       ),
       darkTheme: ThemeData.dark(useMaterial3: true),
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }

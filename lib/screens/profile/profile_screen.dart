@@ -1,38 +1,138 @@
 import 'package:flutter/material.dart';
 
+import '../auth/login_screen.dart';
+import '../../services/token_service.dart';
+
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+
+  final String username;
+  final String email;
+
+  const ProfileScreen({
+    super.key,
+    required this.username,
+    required this.email,
+  });
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              CircleAvatar(
-                radius: 50,
+
+              const SizedBox(height: 20),
+
+              const CircleAvatar(
+                radius: 55,
                 child: Icon(
                   Icons.person,
-                  size: 50,
+                  size: 55,
                 ),
               ),
 
-              SizedBox(height: 16),
+              const SizedBox(height: 20),
 
               Text(
-                "Subash",
-                style: TextStyle(
-                  fontSize: 24,
+                username,
+                style: const TextStyle(
+                  fontSize: 26,
                   fontWeight: FontWeight.bold,
                 ),
               ),
 
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
 
               Text(
-                "Computer Science Student",
+                email,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceAround,
+                    children: const [
+
+                      Column(
+                        children: [
+                          Text(
+                            "0",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight:
+                                  FontWeight.bold,
+                            ),
+                          ),
+                          Text("Posts"),
+                        ],
+                      ),
+
+                      Column(
+                        children: [
+                          Text(
+                            "0",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight:
+                                  FontWeight.bold,
+                            ),
+                          ),
+                          Text("Friends"),
+                        ],
+                      ),
+
+                      Column(
+                        children: [
+                          Text(
+                            "0",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight:
+                                  FontWeight.bold,
+                            ),
+                          ),
+                          Text("Likes"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 40),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+
+                    await TokenService.logout();
+
+                    if (!context.mounted) return;
+
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            const LoginScreen(),
+                      ),
+                      (route) => false,
+                    );
+                  },
+                  icon: const Icon(Icons.logout),
+                  label: const Text("Logout"),
+                ),
               ),
             ],
           ),
