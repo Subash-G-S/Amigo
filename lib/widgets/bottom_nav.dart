@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../screens/create/create_post_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/explore/explore_screen.dart';
 import '../screens/profile/profile_screen.dart';
@@ -21,19 +22,20 @@ class BottomNav extends StatefulWidget {
 class _BottomNavState extends State<BottomNav> {
   int currentIndex = 0;
 
-  late final List<Widget> pages;
+  late HomeScreen homeScreen;
+  late List<Widget> pages;
 
   @override
   void initState() {
     super.initState();
 
+    homeScreen = HomeScreen(
+      username: widget.username,
+    );
+
     pages = [
-      HomeScreen(
-        username: widget.username,
-      ),
-
+      homeScreen,
       const ExploreScreen(),
-
       ProfileScreen(
         username: widget.username,
         email: widget.email,
@@ -41,10 +43,38 @@ class _BottomNavState extends State<BottomNav> {
     ];
   }
 
+  Future<void> openCreatePost() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const CreatePostScreen(),
+      ),
+    );
+
+    if (result == true) {
+      setState(() {
+        homeScreen = HomeScreen(
+          username: widget.username,
+        );
+
+        pages[0] = homeScreen;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages[currentIndex],
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: openCreatePost,
+        child: const Icon(Icons.add),
+      ),
+
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.centerDocked,
+
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentIndex,
         onDestinationSelected: (index) {

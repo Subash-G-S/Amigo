@@ -5,7 +5,7 @@ import '../models/user_model.dart';
 
 class AuthService {
   static const String baseUrl =
-      "https://b2bd-106-192-71-20.ngrok-free.app";
+      "https://86f7-106-192-67-242.ngrok-free.app";
 
   Future<Map<String, dynamic>> login({
     required String email,

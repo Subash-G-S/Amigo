@@ -1,42 +1,108 @@
 import 'package:flutter/material.dart';
 
-class CreatePostScreen extends StatelessWidget {
+import '../../services/post_service.dart';
+
+class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Text(
-                "Create Post",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+  State<CreatePostScreen> createState() =>
+      _CreatePostScreenState();
+}
 
-              SizedBox(height: 20),
+class _CreatePostScreenState
+    extends State<CreatePostScreen> {
 
-              TextField(
-                maxLines: 5,
-                decoration: InputDecoration(
-                  hintText: "What's on your mind?",
-                  border: OutlineInputBorder(),
-                ),
-              ),
+  final TextEditingController postController =
+      TextEditingController();
 
-              SizedBox(height: 20),
+  bool isLoading = false;
 
-              ElevatedButton(
-                onPressed: () {},
-                child: Text("Post"),
-              )
-            ],
+  Future<void> createPost() async {
+
+    if (postController.text.trim().isEmpty) {
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    bool success =
+        await PostService().createPost(
+      postController.text.trim(),
+    );
+
+    if (!mounted) return;
+
+    setState(() {
+      isLoading = false;
+    });
+
+    if (success) {
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Post created successfully",
           ),
+        ),
+      );
+
+      Navigator.pop(context, true);
+
+    } else {
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Failed to create post",
+          ),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Create Post"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+
+            TextField(
+              controller: postController,
+              maxLines: 6,
+              decoration:
+                  const InputDecoration(
+                hintText:
+                    "What's on your mind?",
+                border:
+                    OutlineInputBorder(),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: isLoading
+                    ? null
+                    : createPost,
+                child: isLoading
+                    ? const CircularProgressIndicator()
+                    : const Text("Post"),
+              ),
+            ),
+          ],
         ),
       ),
     );
