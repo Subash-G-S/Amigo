@@ -1,29 +1,23 @@
-class PostModel {
+class CommentModel {
   final String id;
   final String author;
   final String content;
   final String createdAt;
 
-  int likes;
-  bool liked;
-
-  PostModel({
+  CommentModel({
     required this.id,
     required this.author,
     required this.content,
     required this.createdAt,
-    required this.likes,
-    required this.liked,
   });
 
-  factory PostModel.fromJson(Map<String, dynamic> json) {
-    return PostModel(
+  factory CommentModel.fromJson(
+      Map<String, dynamic> json) {
+    return CommentModel(
       id: json["id"],
       author: json["author"],
       content: json["content"],
       createdAt: json["created_at"],
-      likes: json["likes"],
-      liked: json["liked"],
     );
   }
 }

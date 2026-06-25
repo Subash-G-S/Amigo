@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../auth/login_screen.dart';
 import '../../services/token_service.dart';
+import '../../widgets/profile_avatar.dart';
 
 class ProfileScreen extends StatelessWidget {
 
@@ -26,13 +27,9 @@ class ProfileScreen extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              const CircleAvatar(
-                radius: 55,
-                child: Icon(
-                  Icons.person,
-                  size: 55,
-                ),
-              ),
+              const ProfileAvatar(
+                        radius: 50,
+                    ),
 
               const SizedBox(height: 20),
 

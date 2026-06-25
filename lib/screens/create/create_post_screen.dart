@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../services/post_service.dart';
+import '../../widgets/custom_button.dart';
+import '../../widgets/custom_textfield.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -77,16 +79,10 @@ class _CreatePostScreenState
         child: Column(
           children: [
 
-            TextField(
+            CustomTextField(
               controller: postController,
-              maxLines: 6,
-              decoration:
-                  const InputDecoration(
-                hintText:
-                    "What's on your mind?",
-                border:
-                    OutlineInputBorder(),
-              ),
+              hint : "What's on your mind?",
+              icon : Icons.edit
             ),
 
             const SizedBox(height: 20),

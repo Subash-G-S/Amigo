@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/post_model.dart';
+import '../providers/post_provider.dart';
+import '../utils/date_formatter.dart';
+import '../screens/comments/comment_screen.dart';
 
 class PostCard extends StatelessWidget {
   final PostModel post;
@@ -26,11 +30,9 @@ class PostCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
-            /// Header
+            /// HEADER
             Row(
               children: [
-
                 const CircleAvatar(
                   radius: 22,
                   child: Icon(Icons.person),
@@ -40,22 +42,20 @@ class PostCard extends StatelessWidget {
 
                 Expanded(
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       Text(
                         post.author,
                         style: const TextStyle(
-                          fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          fontSize: 16,
                         ),
                       ),
 
-                      const SizedBox(height: 2),
+                      const SizedBox(height: 3),
 
                       Text(
-                        post.createdAt,
+                        DateFormatter.timeAgo(post.createdAt),
                         style: TextStyle(
                           color: Colors.grey.shade600,
                           fontSize: 12,
@@ -74,39 +74,97 @@ class PostCard extends StatelessWidget {
 
             const SizedBox(height: 18),
 
-            /// Post Content
+            /// CONTENT
             Text(
               post.content,
               style: const TextStyle(
                 fontSize: 16,
-                height: 1.4,
+                height: 1.5,
               ),
             ),
 
             const SizedBox(height: 18),
 
+            /// LIKE COUNT
+            if (post.likes > 0)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  "${post.likes} likes",
+                  style: TextStyle(
+                    color: Colors.grey.shade700,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+
             const Divider(),
 
+            /// ACTIONS
             Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-
                 TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.favorite_border),
-                  label: const Text("Like"),
+                  onPressed: () {
+                    context
+                        .read<PostProvider>()
+                        .toggleLike(post);
+                  },
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(
+                      milliseconds: 250,
+                    ),
+                    transitionBuilder:
+                        (child, animation) =>
+                            ScaleTransition(
+                      scale: animation,
+                      child: child,
+                    ),
+                    child: Icon(
+                      post.liked
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      key: ValueKey(post.liked),
+                      color: post.liked
+                          ? Colors.red
+                          : Colors.grey,
+                    ),
+                  ),
+                  label: Text(
+                    "Like",
+                    style: TextStyle(
+                      color: post.liked
+                          ? Colors.red
+                          : Colors.grey.shade700,
+                    ),
+                  ),
                 ),
 
                 TextButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.chat_bubble_outline),
+                  onPressed: () {
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            CommentScreen(
+                          postId: post.id,
+                        ),
+                      ),
+                    );
+
+                  },
+                  icon: const Icon(
+                    Icons.chat_bubble_outline,
+                  ),
                   label: const Text("Comment"),
                 ),
 
                 TextButton.icon(
                   onPressed: () {},
-                  icon: const Icon(Icons.share_outlined),
+                  icon: const Icon(
+                    Icons.share_outlined,
+                  ),
                   label: const Text("Share"),
                 ),
               ],

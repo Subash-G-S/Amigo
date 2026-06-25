@@ -7,11 +7,16 @@ import 'package:amigo/services/token_service.dart';
 
 class PostService {
   static const String baseUrl =
-      "https://86f7-106-192-67-242.ngrok-free.app";
+      "https://e44b-106-192-78-162.ngrok-free.app";
 
   Future<List<PostModel>> getFeed() async {
+    final token = await TokenService.getToken();
+
     final response = await http.get(
       Uri.parse("$baseUrl/posts/feed"),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
     );
 
     final List data = jsonDecode(response.body);

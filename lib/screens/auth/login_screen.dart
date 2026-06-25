@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../services/auth_service.dart';
 import '../../services/token_service.dart';
+import '../../widgets/custom_button.dart';
+import '../../widgets/custom_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -136,33 +138,22 @@ class _LoginScreenState
                     height: 20,
                   ),
 
-                  TextField(
-                    controller:
-                        emailController,
-                    decoration:
-                        const InputDecoration(
-                      labelText: "Email",
-                      border:
-                          OutlineInputBorder(),
-                    ),
+                  CustomTextField(
+                    controller: emailController,
+                    hint: "Email",
+                    icon: Icons.email_outlined,
                   ),
 
                   const SizedBox(
                     height: 16,
                   ),
 
-                  TextField(
-                    controller:
-                        passwordController,
-                    obscureText: true,
-                    decoration:
-                        const InputDecoration(
-                      labelText:
-                          "Password",
-                      border:
-                          OutlineInputBorder(),
-                    ),
-                  ),
+                  CustomTextField(
+  controller: passwordController,
+  hint: "Password",
+  icon: Icons.lock_outline,
+  obscure: true,
+),
 
                   const SizedBox(
                     height: 20,
@@ -172,18 +163,12 @@ class _LoginScreenState
                     width:
                         double.infinity,
                     child:
-                        ElevatedButton(
-                      onPressed:
-                          isLoading
-                              ? null
-                              : login,
-                      child:
-                          isLoading
-                              ? const CircularProgressIndicator()
-                              : const Text(
-                                  "Login",
-                                ),
-                    ),
+                        CustomButton(
+  text: "Login",
+  icon: Icons.login,
+  loading: isLoading,
+  onPressed: login,
+),
                   ),
                 ],
               ),

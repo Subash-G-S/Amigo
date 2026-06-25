@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../models/post_model.dart';
-import '../../services/post_service.dart';
+import '../../providers/post_provider.dart';
 import '../../widgets/post_card.dart';
+import '../../widgets/empty_feed.dart';
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -17,93 +18,108 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final PostService _postService = PostService();
-
-  List<PostModel> posts = [];
-  bool isLoading = true;
-
   @override
   void initState() {
     super.initState();
-    loadFeed();
-  }
 
-  Future<void> loadFeed() async {
-    try {
-      final data = await _postService.getFeed();
-
-      if (!mounted) return;
-
-      setState(() {
-        posts = data;
-        isLoading = false;
-      });
-    } catch (e) {
-      print(e);
-
-      if (!mounted) return;
-
-      setState(() {
-        isLoading = false;
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<PostProvider>().loadFeed();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<PostProvider>();
+
     return Scaffold(
+      backgroundColor: const Color(0xffF5F7FA),
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: loadFeed,
+          onRefresh: () => context.read<PostProvider>().loadFeed(),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              /// HEADER
+              Container(
+                margin: const EdgeInsets.fromLTRB(16, 16, 16, 12),
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xFF6A11CB),
+                      Color(0xFF2575FC),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                child: Row(
                   children: [
-                    const Text(
-                      "AMIGO",
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Welcome Back 👋",
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 15,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            widget.username,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            "Stay connected with your friends.",
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-
-                    const SizedBox(height: 8),
-
-                    Text(
-                      "Welcome, ${widget.username} 👋",
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white24,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.notifications_none,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-
-                    const SizedBox(height: 20),
                   ],
                 ),
               ),
 
+              /// FEED
               Expanded(
-                child: isLoading
+                child: provider.loading
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : posts.isEmpty
-                        ? const Center(
-                            child: Text(
-                              "No posts yet.",
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          )
+                    : provider.posts.isEmpty
+                        ? const EmptyFeed()
                         : ListView.builder(
-                            itemCount: posts.length,
+                            physics:
+                                const AlwaysScrollableScrollPhysics(),
+                            padding: const EdgeInsets.only(bottom: 20),
+                            itemCount: provider.posts.length,
                             itemBuilder: (context, index) {
-                              final post = posts[index];
-
                               return PostCard(
-                                post: post,
+                                post: provider.posts[index],
                               );
                             },
                           ),
