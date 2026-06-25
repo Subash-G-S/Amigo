@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../services/post_service.dart';
-import '../../widgets/custom_button.dart';
-import '../../widgets/custom_textfield.dart';
+import '../../widgets/buttons/custom_button.dart';
+import '../../widgets/inputs/custom_textfield.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});

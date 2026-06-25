@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../auth/login_screen.dart';
 import '../../services/token_service.dart';
-import '../../widgets/profile_avatar.dart';
+import '../../widgets/common/profile_avatar.dart';
 
 class ProfileScreen extends StatelessWidget {
 

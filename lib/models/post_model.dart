@@ -5,6 +5,7 @@ class PostModel {
   final String createdAt;
 
   int likes;
+  int comments;
   bool liked;
 
   PostModel({
@@ -13,6 +14,7 @@ class PostModel {
     required this.content,
     required this.createdAt,
     required this.likes,
+    required this.comments,
     required this.liked,
   });
 
@@ -22,8 +24,9 @@ class PostModel {
       author: json["author"],
       content: json["content"],
       createdAt: json["created_at"],
-      likes: json["likes"],
-      liked: json["liked"],
+      likes: json["likes"] ?? 0,
+      comments: json["comments"] ?? 0,
+      liked: json["liked"] ?? false,
     );
   }
 }

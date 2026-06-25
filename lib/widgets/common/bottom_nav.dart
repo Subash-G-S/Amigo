@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../screens/create/create_post_screen.dart';
-import '../screens/home/home_screen.dart';
-import '../screens/explore/explore_screen.dart';
-import '../screens/profile/profile_screen.dart';
+import '../../screens/create/create_post_screen.dart';
+import '../../screens/home/home_screen.dart';
+import '../../screens/explore/explore_screen.dart';
+import '../../screens/profile/profile_screen.dart';
 
 class BottomNav extends StatefulWidget {
   final String username;

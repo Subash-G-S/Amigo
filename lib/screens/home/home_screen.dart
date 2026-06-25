@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/post_provider.dart';
-import '../../widgets/post_card.dart';
-import '../../widgets/empty_feed.dart';
+import '../../widgets/home/dashboard_header.dart';
+import '../../widgets/home/empty_feed.dart';
+import '../../widgets/home/post_card.dart';
+import '../create/create_post_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -32,98 +34,77 @@ class _HomeScreenState extends State<HomeScreen> {
     final provider = context.watch<PostProvider>();
 
     return Scaffold(
-      backgroundColor: const Color(0xffF5F7FA),
+      backgroundColor: const Color(0xFFF3F6FB),
+
+      floatingActionButton: FloatingActionButton.extended(
+        elevation: 10,
+        backgroundColor: const Color(0xFF4F46E5),
+        icon: const Icon(Icons.add),
+        label: const Text("Create"),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const CreatePostScreen(),
+            ),
+          );
+        },
+      ),
+
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: () => context.read<PostProvider>().loadFeed(),
-          child: Column(
-            children: [
-              /// HEADER
-              Container(
-                margin: const EdgeInsets.fromLTRB(16, 16, 16, 12),
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFF6A11CB),
-                      Color(0xFF2575FC),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Welcome Back 👋",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 15,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            widget.username,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            "Stay connected with your friends.",
-                            style: TextStyle(
-                              color: Colors.white70,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white24,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.notifications_none,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+          onRefresh: provider.loadFeed,
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+
+              /// Dashboard Header
+              SliverToBoxAdapter(
+                child: DashboardHeader(
+                  username: widget.username,
                 ),
               ),
 
-              /// FEED
-              Expanded(
-                child: provider.loading
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : provider.posts.isEmpty
-                        ? const EmptyFeed()
-                        : ListView.builder(
-                            physics:
-                                const AlwaysScrollableScrollPhysics(),
-                            padding: const EdgeInsets.only(bottom: 20),
-                            itemCount: provider.posts.length,
-                            itemBuilder: (context, index) {
-                              return PostCard(
-                                post: provider.posts[index],
-                              );
-                            },
-                          ),
+              /// Feed Title
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(20, 16, 20, 12),
+                  child: Text(
+                    "Latest Feed",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
+
+              /// Loading
+              if (provider.loading)
+                const SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+
+              /// Empty Feed
+              else if (provider.posts.isEmpty)
+                const SliverFillRemaining(
+                  child: EmptyFeed(),
+                )
+
+              /// Feed
+              else
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return PostCard(
+                        post: provider.posts[index],
+                      );
+                    },
+                    childCount: provider.posts.length,
+                  ),
+                ),
             ],
           ),
         ),
