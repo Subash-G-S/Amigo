@@ -4,10 +4,10 @@ import 'package:http/http.dart' as http;
 
 import '../models/post_model.dart';
 import 'package:amigo/services/token_service.dart';
+import '../config/app_config.dart';
 
 class PostService {
-  static const String baseUrl =
-      "https://e44b-106-192-78-162.ngrok-free.app";
+  final String baseUrl = AppConfig.apiBaseUrl;
 
   Future<List<PostModel>> getFeed() async {
     final token = await TokenService.getToken();
@@ -28,6 +28,9 @@ class PostService {
   Future<bool> createPost(String content) async {
 
   final token = await TokenService.getToken();
+  print("=========== CREATE POST ===========");
+  print("BASE URL: $baseUrl");
+  print("TOKEN: $token");
 
   final response = await http.post(
     Uri.parse("$baseUrl/posts/create"),
@@ -39,6 +42,9 @@ class PostService {
       "content": content,
     }),
   );
+  print("STATUS CODE: ${response.statusCode}");
+  print("RESPONSE BODY: ${response.body}");
+  print("===================================");
 
   return response.statusCode == 200;
 }

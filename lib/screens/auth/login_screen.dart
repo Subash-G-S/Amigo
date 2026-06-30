@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/auth/auth_background.dart';
+import '../../widgets/auth/auth_button.dart';
+import '../../widgets/auth/animated_textfield.dart';
+import '../../widgets/auth/auth_logo.dart';
+import 'signup_screen.dart';
 import '../../services/auth_service.dart';
-import '../../services/token_service.dart';
+import '../../services/session_service.dart';
+import 'forgot_password_screen.dart';
 import '../../widgets/common/bottom_nav.dart';
-import '../../widgets/buttons/custom_button.dart';
-import '../../widgets/common/glass_card.dart';
-import '../../widgets/inputs/custom_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,373 +17,242 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
-    with SingleTickerProviderStateMixin {
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final AuthService _authService = AuthService();
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-  bool isLoading = false;
-
-  late AnimationController _controller;
-  late Animation<double> _fadeAnimation;
-  late Animation<Offset> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 900),
-    );
-
-    _fadeAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    );
-
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, .15),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: Curves.easeOutCubic,
-      ),
-    );
-
-    _controller.forward();
-  }
+  bool _loading = false;
 
   @override
   void dispose() {
-    _controller.dispose();
-    emailController.dispose();
-    passwordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
   Future<void> login() async {
+  if (!_formKey.currentState!.validate()) return;
 
-    if (emailController.text.isEmpty ||
-        passwordController.text.isEmpty) {
-      return;
-    }
+  setState(() => _loading = true);
 
-    setState(() {
-      isLoading = true;
-    });
+  try {
+    final result = await _authService.login(
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+    );
 
-    try {
+    await SessionService.saveSession(
+      token: result["access_token"],
+      id: result["user"]["id"],
+      name: result["user"]["name"],
+      email: result["user"]["email"],
+    );
 
-      final response = await AuthService().login(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+    if (!mounted) return;
 
-      if (response["user"] != null) {
+    Navigator.pushReplacement(
+  context,
+  MaterialPageRoute(
+    builder: (_) => BottomNav(
+      username: result["user"]["name"],
+      email: result["user"]["email"],
+    ),
+  ),
+);
+  } catch (e) {
+    if (!mounted) return;
 
-        await TokenService.saveToken(
-          response["access_token"],
-        );
-
-        if (!mounted) return;
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => BottomNav(
-              username: response["user"]["name"],
-              email: response["user"]["email"],
-            ),
-          ),
-        );
-
-      } else {
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Invalid Credentials"),
-          ),
-        );
-
-      }
-
-    } catch (e) {
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(e.toString()),
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          e.toString().replaceFirst("Exception: ", ""),
         ),
-      );
-
-    } finally {
-
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
-
+      ),
+    );
+  } finally {
+    if (mounted) {
+      setState(() => _loading = false);
     }
-
   }
+}
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-
-      body: Container(
-
-        decoration: const BoxDecoration(
-
-          gradient: LinearGradient(
-
-            colors: [
-
-              Color(0xff6A11CB),
-
-              Color(0xff2575FC),
-
-            ],
-
-            begin: Alignment.topLeft,
-
-            end: Alignment.bottomRight,
-
-          ),
-
-        ),
-
-        child: SafeArea(
-
-          child: Center(
-
-            child: SingleChildScrollView(
-
-              padding: const EdgeInsets.symmetric(
-                horizontal: 24,
-              ),
-
-              child: FadeTransition(
-
-                opacity: _fadeAnimation,
-
-                child: SlideTransition(
-
-                  position: _slideAnimation,
-
-                  child: Column(
-
-                    children: [
-
-                      Hero(
-
-                        tag: "logo",
-
-                        child: Container(
-
-                          height: 95,
-
-                          width: 95,
-
-                          decoration: BoxDecoration(
-
-                            color: Colors.white,
-
-                            borderRadius:
-                                BorderRadius.circular(30),
-
-                            boxShadow: [
-
-                              BoxShadow(
-
-                                color: Colors.black.withOpacity(.15),
-
-                                blurRadius: 25,
-
-                              ),
-
-                            ],
-
-                          ),
-
-                          child: const Icon(
-
-                            Icons.forum,
-
-                            size: 50,
-
-                            color: Color(0xff4F46E5),
-
-                          ),
-
-                        ),
-
-                      ),
-
-                      const SizedBox(height: 24),
-
-                      const Text(
-
-                        "AMIGO",
-
-                        style: TextStyle(
-
-                          color: Colors.white,
-
-                          fontWeight: FontWeight.bold,
-
-                          fontSize: 38,
-
-                          letterSpacing: 2,
-
-                        ),
-
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      const Text(
-
-                        "Connect • Share • Discover",
-
-                        style: TextStyle(
-
-                          color: Colors.white70,
-
-                          fontSize: 16,
-
-                        ),
-
-                      ),
-
-                      const SizedBox(height: 40),
-
-                      GlassCard(
-
-                        child: Column(
-
-                          children: [
-
-                            const Text(
-
-                              "Welcome Back",
-
-                              style: TextStyle(
-
-                                color: Colors.white,
-
-                                fontWeight: FontWeight.bold,
-
-                                fontSize: 24,
-
-                              ),
-
-                            ),
-
-                            const SizedBox(height: 6),
-
-                            const Text(
-
-                              "Login to continue",
-
-                              style: TextStyle(
-
-                                color: Colors.white70,
-
-                              ),
-
-                            ),
-
-                            const SizedBox(height: 28),
-
-                            CustomTextField(
-
-                              controller: emailController,
-
-                              hint: "Email Address",
-
-                              icon: Icons.email_outlined,
-
-                            ),
-
-                            const SizedBox(height: 18),
-
-                            CustomTextField(
-
-                              controller: passwordController,
-
-                              hint: "Password",
-
-                              icon: Icons.lock_outline,
-
-                              obscureText: true,
-
-                            ),
-
-                            const SizedBox(height: 28),
-
-                            CustomButton(
-
-                              text: "Login",
-
-                              icon: Icons.login,
-
-                              loading: isLoading,
-
-                              onPressed: login,
-
-                            ),
-
-                            const SizedBox(height: 18),
-
-                            TextButton(
-
-                              onPressed: () {},
-
-                              child: const Text(
-
-                                "Create an Account",
-
-                                style: TextStyle(
-
-                                  color: Colors.white,
-
-                                  fontWeight: FontWeight.w600,
-
-                                ),
-
-                              ),
-
-                            ),
-
-                          ],
-
-                        ),
-
-                      ),
-
-                    ],
-
+    return AuthBackground(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const AuthLogo(),
+
+            const SizedBox(height: 40),
+
+            Text(
+              "Welcome Back",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
-
-                ),
-
-              ),
-
             ),
 
-          ),
+            const SizedBox(height: 8),
 
-        ),
+            const Text(
+              "Login to continue",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white70,
+                fontSize: 15,
+              ),
+            ),
 
-      ),
+            const SizedBox(height: 35),
 
-    );
-
+            AnimatedTextField(
+              controller: _emailController,
+              hint: "Email",
+              icon: Icons.email_outlined,
+              keyboardType: TextInputType.emailAddress,
+              validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter your Amrita email";
   }
 
+  final email = value.trim();
+
+  final regex = RegExp(
+    r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]*students\.amrita\.edu$",
+  );
+
+  if (!regex.hasMatch(email)) {
+    return "Use your official Amrita email";
+  }
+
+  return null;
+},
+            ),
+
+            const SizedBox(height: 20),
+
+            AnimatedTextField(
+              controller: _passwordController,
+              hint: "Password",
+              icon: Icons.lock_outline,
+              obscure: true,
+              validator: (value) {
+  if (value == null || value.isEmpty) {
+    return "Enter password";
+  }
+
+  if (value.length < 6) {
+    return "Password must be at least 6 characters";
+  }
+
+  return null;
+},
+            ),
+
+            const SizedBox(height: 12),
+
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const ForgotPasswordScreen(),
+    ),
+  );
+},
+                child: const Text(
+                  "Forgot Password?",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            AuthButton(
+              text: "LOGIN",
+              loading: _loading,
+              onPressed: login,
+            ),
+
+            const SizedBox(height: 30),
+
+            Row(
+              children: const [
+                Expanded(child: Divider(color: Colors.white38)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    "OR",
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                ),
+                Expanded(child: Divider(color: Colors.white38)),
+              ],
+            ),
+
+            const SizedBox(height: 25),
+
+            OutlinedButton.icon(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Google Login"),
+                  ),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.white,
+                side: const BorderSide(color: Colors.white54),
+                minimumSize: const Size(double.infinity, 55),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+              icon: const Icon(Icons.g_mobiledata, size: 32),
+              label: const Text("Continue with Google"),
+            ),
+
+            const SizedBox(height: 35),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Don't have an account?",
+                  style: TextStyle(
+                    color: Colors.white70,
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const SignupScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text("Sign Up"),
+                ),
+              ],
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
 }

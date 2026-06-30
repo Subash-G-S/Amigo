@@ -1,10 +1,11 @@
 import 'package:http/http.dart' as http;
 
 import 'token_service.dart';
+import '../config/app_config.dart';
+
 
 class LikeService {
-  static const String baseUrl =
-      "https://e44b-106-192-78-162.ngrok-free.app";
+  final String baseUrl = AppConfig.apiBaseUrl;
 
   Future<bool> likePost(String postId) async {
     final token = await TokenService.getToken();

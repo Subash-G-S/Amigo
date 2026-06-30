@@ -1,11 +1,12 @@
-import 'package:http/http.dart' as http;
+import '../config/app_config.dart';
 
 class ApiService {
-  static Future<http.Response> getRequest(
-    String endpoint,
-  ) async {
-    return await http.get(
-      Uri.parse(endpoint),
+  static String get baseUrl =>
+      AppConfig.apiBaseUrl;
+
+  static Uri uri(String endpoint) {
+    return Uri.parse(
+      "$baseUrl$endpoint",
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/post_provider.dart';
-import '../../widgets/home/dashboard_header.dart';
+
 import '../../widgets/home/empty_feed.dart';
 import '../../widgets/home/post_card.dart';
 import '../create/create_post_screen.dart';
@@ -36,20 +36,40 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF3F6FB),
 
-      floatingActionButton: FloatingActionButton.extended(
-        elevation: 10,
-        backgroundColor: const Color(0xFF4F46E5),
-        icon: const Icon(Icons.add),
-        label: const Text("Create"),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => const CreatePostScreen(),
-            ),
-          );
-        },
+      appBar: AppBar(
+  backgroundColor: Colors.white,
+  elevation: 0,
+  centerTitle: true,
+
+  title: const Text(
+    "AMIGO",
+    style: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+  ),
+
+  actions: [
+    IconButton(
+      icon: const Icon(
+        Icons.add_circle_outline,
+        color: Colors.black,
       ),
+      onPressed: () async {
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const CreatePostScreen(),
+          ),
+        );
+
+        if (result == true) {
+          context.read<PostProvider>().loadFeed();
+        }
+      },
+    ),
+  ],
+),
 
       body: SafeArea(
         child: RefreshIndicator(
@@ -57,27 +77,78 @@ class _HomeScreenState extends State<HomeScreen> {
           child: CustomScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             slivers: [
-
-              /// Dashboard Header
               SliverToBoxAdapter(
-                child: DashboardHeader(
-                  username: widget.username,
+  child: Padding(
+    padding: const EdgeInsets.fromLTRB(16, 16, 16, 10),
+    child: InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: () async {
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const CreatePostScreen(),
+          ),
+        );
+
+        if (result == true) {
+          context.read<PostProvider>().loadFeed();
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 16,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(.05),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.indigo.shade100,
+              child: Text(
+                widget.username[0].toUpperCase(),
+                style: const TextStyle(
+                  color: Colors.indigo,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+            ),
+
+            const SizedBox(width: 14),
+
+            const Expanded(
+              child: Text(
+                "What's on your mind?",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+
+            Icon(
+              Icons.edit_square,
+              color: Colors.indigo.shade400,
+            ),
+          ],
+        ),
+      ),
+    ),
+  ),
+),
+              
 
               /// Feed Title
-              const SliverToBoxAdapter(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(20, 16, 20, 12),
-                  child: Text(
-                    "Latest Feed",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+              
 
               /// Loading
               if (provider.loading)

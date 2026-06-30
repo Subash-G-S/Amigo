@@ -39,6 +39,9 @@ class _BottomNavState extends State<BottomNav> {
       ProfileScreen(
         username: widget.username,
         email: widget.email,
+        posts: 12,
+        followers: 1200,
+        following: 186,
       ),
     ];
   }
@@ -67,13 +70,7 @@ class _BottomNavState extends State<BottomNav> {
     return Scaffold(
       body: pages[currentIndex],
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: openCreatePost,
-        child: const Icon(Icons.add),
-      ),
-
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerDocked,
+      
 
       bottomNavigationBar: NavigationBar(
         selectedIndex: currentIndex,
