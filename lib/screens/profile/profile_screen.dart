@@ -7,22 +7,41 @@ import '../../widgets/profile/profile_gradient_header.dart';
 import '../../widgets/profile/profile_section.dart';
 import '../../widgets/profile/profile_stats.dart';
 import '../../widgets/profile/profile_tile.dart';
+import '../../services/auth_service.dart';
+import '../../models/search_user_model.dart';
+import 'edit_profile_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
-  final String username;
-  final String email;
-  final int posts;
-  final int followers;
-  final int following;
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+    @override
+State<ProfileScreen> createState() =>
+    _ProfileScreenState();
+}
 
-  const ProfileScreen({
-    super.key,
-    required this.username,
-    required this.email,
-    required this.posts,
-    required this.followers,
-    required this.following,
+class _ProfileScreenState
+    extends State<ProfileScreen> {
+  final AuthService _authService = AuthService();
+
+SearchUserModel? profile;
+
+bool loading = true;
+@override
+void initState() {
+  super.initState();
+  loadProfile();
+}
+
+Future<void> loadProfile() async {
+
+  final result =
+      await _authService.getMyProfile();
+
+  setState(() {
+    profile = result;
+    loading = false;
   });
+
+}
 
   Future<void> logout(BuildContext context) async {
     await TokenService.logout();
@@ -70,6 +89,13 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (loading) {
+  return const Scaffold(
+    body: Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
+}
     return Scaffold(
       backgroundColor: const Color(0xffF3F6FB),
       body: SafeArea(
@@ -79,8 +105,8 @@ class ProfileScreen extends StatelessWidget {
 
               /// HEADER
               ProfileGradientHeader(
-                username: username,
-                email: email,
+                username: profile!.name,
+                email: profile!.email,
               ),
 
               Padding(
@@ -160,17 +186,17 @@ class ProfileScreen extends StatelessWidget {
 
                         ProfileStats(
                           title: "Posts",
-                          value: posts.toString(),
+                          value: profile!.posts.toString(),
                         ),
 
                         ProfileStats(
                           title: "Followers",
-                          value: followers.toString(),
+                          value: profile!.followers.toString(),
                         ),
 
                         ProfileStats(
                           title: "Following",
-                          value: following.toString(),
+                          value: profile!.following.toString(),
                         ),
                       ],
                     ),
@@ -185,7 +211,20 @@ class ProfileScreen extends StatelessWidget {
                         ProfileTile(
                           icon: Icons.edit,
                           title: "Edit Profile",
-                          onTap: () {},
+                          onTap: () async {
+
+  final updated = await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const EditProfileScreen(),
+    ),
+  );
+
+  if (updated == true) {
+    loadProfile();
+  }
+
+},
                         ),
 
                         ProfileTile(

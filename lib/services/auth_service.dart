@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 
 import '../models/user_model.dart';
 import '../config/app_config.dart';
+import '../models/search_user_model.dart';
+import 'token_service.dart';
 
 
 class AuthService {
@@ -133,4 +135,71 @@ Future<Map<String, dynamic>> resetPassword({
       jsonDecode(response.body),
     );
   }
+
+Future<List<SearchUserModel>> searchUsers(
+    String query) async {
+
+  final response = await http.get(
+    Uri.parse(
+      "$baseUrl/auth/search?q=$query",
+    ),
+  );
+
+  final List data = jsonDecode(response.body);
+
+  return data
+      .map(
+        (e) => SearchUserModel.fromJson(e),
+      )
+      .toList();
+}
+Future<SearchUserModel> getUserProfile(
+    String userId) async {
+
+  final response = await http.get(
+    Uri.parse(
+      "$baseUrl/auth/user/$userId",
+    ),
+  );
+
+  return SearchUserModel.fromJson(
+    jsonDecode(response.body),
+  );
+}
+Future<SearchUserModel> getMyProfile() async {
+  final token = await TokenService.getToken();
+
+  final response = await http.get(
+    Uri.parse("$baseUrl/auth/profile"),
+    headers: {
+      "Authorization": "Bearer $token",
+    },
+  );
+
+  return SearchUserModel.fromJson(
+    jsonDecode(response.body),
+  );
+}
+Future<void> updateProfile({
+  required String name,
+  required String bio,
+}) async {
+  final token = await TokenService.getToken();
+
+  final response = await http.put(
+    Uri.parse("$baseUrl/auth/profile"),
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+    },
+    body: jsonEncode({
+      "name": name,
+      "bio": bio,
+    }),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception("Failed to update profile");
+  }
+}
 }

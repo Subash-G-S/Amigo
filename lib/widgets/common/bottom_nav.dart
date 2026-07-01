@@ -35,14 +35,8 @@ class _BottomNavState extends State<BottomNav> {
 
     pages = [
       homeScreen,
-      const ExploreScreen(),
-      ProfileScreen(
-        username: widget.username,
-        email: widget.email,
-        posts: 12,
-        followers: 1200,
-        following: 186,
-      ),
+      ExploreScreen(),
+      const ProfileScreen(),
     ];
   }
 
