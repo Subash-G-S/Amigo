@@ -84,31 +84,6 @@ class ProfileGradientHeader
               color: Colors.white70,
             ),
           ),
-
-          const SizedBox(height: 20),
-
-          FilledButton.icon(
-
-            style:
-                FilledButton.styleFrom(
-
-              backgroundColor:
-                  Colors.white,
-
-              foregroundColor:
-                  Colors.indigo,
-
-            ),
-
-            onPressed: () {},
-
-            icon:
-                const Icon(Icons.edit),
-
-            label:
-                const Text("Edit Profile"),
-
-          ),
         ],
       ),
     );
