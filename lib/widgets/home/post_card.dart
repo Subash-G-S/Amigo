@@ -91,9 +91,15 @@ class _PostCardState extends State<PostCard>
                       tag: "avatar_${post.id}",
                       child: CircleAvatar(
                         radius: 24,
-                        backgroundColor:
-                            Colors.indigo.shade100,
-                        child: Text(
+                        backgroundColor: post.isAnonymous
+    ? Colors.deepPurple.shade100
+    : Colors.indigo.shade100,
+                        child: post.isAnonymous
+                            ? const Icon(
+                                Icons.visibility_off,
+                                color: Colors.deepPurple,
+                            )
+                            : Text(
                           post.author[0].toUpperCase(),
                           style: const TextStyle(
                             fontWeight:
@@ -114,7 +120,9 @@ class _PostCardState extends State<PostCard>
                         children: [
 
                           Text(
-                            post.author,
+  post.isAnonymous
+      ? "Anonymous"
+      : post.author,
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight:
@@ -125,15 +133,12 @@ class _PostCardState extends State<PostCard>
                           const SizedBox(height: 4),
 
                           Text(
-                            DateFormatter.timeAgo(
-                              post.createdAt,
-                            ),
-                            style: TextStyle(
-                              color:
-                                  Colors.grey.shade600,
-                              fontSize: 12,
-                            ),
-                          ),
+  "${post.isAnonymous ? "Anonymous • " : ""}${DateFormatter.timeAgo(post.createdAt)}",
+  style: TextStyle(
+    color: Colors.grey.shade600,
+    fontSize: 12,
+  ),
+),
                         ],
                       ),
                     ),

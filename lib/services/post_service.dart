@@ -25,7 +25,10 @@ class PostService {
         .map((e) => PostModel.fromJson(e))
         .toList();
   }
-  Future<bool> createPost(String content) async {
+  Future<bool> createPost(
+    String content,
+    bool isAnonymous,
+  ) async {
 
   final token = await TokenService.getToken();
   print("=========== CREATE POST ===========");
@@ -40,6 +43,7 @@ class PostService {
     },
     body: jsonEncode({
       "content": content,
+      "is_anonymous": isAnonymous,
     }),
   );
   print("STATUS CODE: ${response.statusCode}");

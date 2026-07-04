@@ -37,34 +37,33 @@ class _AnimatedTextFieldState extends State<AnimatedTextField> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.transparent,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: _focused
-                ? const Color(0xff2563EB)
-                : Colors.grey.shade300,
+                ? Colors.white
+                : Colors.white54,
             width: 2,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(.05),
-              blurRadius: 10,
-            ),
-          ],
         ),
         child: TextFormField(
           controller: widget.controller,
           validator: widget.validator,
           keyboardType: widget.keyboardType,
           obscureText: widget.obscure ? _hidePassword : false,
-          cursorColor: const Color(0xff2563EB),
+          cursorColor: Colors.white,
           style: const TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 16,
           ),
           decoration: InputDecoration(
+            filled: false,
+            fillColor: Colors.transparent,
             border: InputBorder.none,
             hintText: widget.hint,
+            hintStyle: const TextStyle(
+              color: Colors.white70,
+            ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 20,
               vertical: 18,
@@ -72,8 +71,8 @@ class _AnimatedTextFieldState extends State<AnimatedTextField> {
             prefixIcon: Icon(
               widget.icon,
               color: _focused
-                  ? const Color(0xff2563EB)
-                  : Colors.grey,
+                  ? Colors.white
+                  : Colors.white70,
             ),
             suffixIcon: widget.obscure
                 ? IconButton(
@@ -81,6 +80,7 @@ class _AnimatedTextFieldState extends State<AnimatedTextField> {
                       _hidePassword
                           ? Icons.visibility_off
                           : Icons.visibility,
+                        color : Colors.white70,
                     ),
                     onPressed: () {
                       setState(() {

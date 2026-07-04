@@ -4,6 +4,7 @@ import '../../screens/create/create_post_screen.dart';
 import '../../screens/home/home_screen.dart';
 import '../../screens/explore/explore_screen.dart';
 import '../../screens/profile/profile_screen.dart';
+import '../../screens/chat/chat_screen.dart';
 
 class BottomNav extends StatefulWidget {
   final String username;
@@ -36,6 +37,7 @@ class _BottomNavState extends State<BottomNav> {
     pages = [
       homeScreen,
       ExploreScreen(),
+      const ChatScreen(),
       const ProfileScreen(),
     ];
   }
@@ -82,6 +84,11 @@ class _BottomNavState extends State<BottomNav> {
           NavigationDestination(
             icon: Icon(Icons.search),
             label: "Explore",
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.chat_bubble_outline),
+            selectedIcon: Icon(Icons.chat),
+            label: "Chat",
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),

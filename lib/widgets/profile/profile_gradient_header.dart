@@ -7,11 +7,13 @@ class ProfileGradientHeader
 
   final String username;
   final String email;
+  final String bio;
 
   const ProfileGradientHeader({
     super.key,
     required this.username,
     required this.email,
+    required this.bio,
   });
 
   @override
@@ -84,6 +86,20 @@ class ProfileGradientHeader
               color: Colors.white70,
             ),
           ),
+          const SizedBox(height: 10),
+
+Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 30),
+  child: Text(
+    bio.isEmpty ? "No bio yet." : bio,
+    textAlign: TextAlign.center,
+    style: const TextStyle(
+      color: Colors.white,
+      fontSize: 15,
+      height: 1.4,
+    ),
+  ),
+),
         ],
       ),
     );

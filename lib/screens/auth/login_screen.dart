@@ -187,44 +187,6 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: login,
             ),
 
-            const SizedBox(height: 30),
-
-            Row(
-              children: const [
-                Expanded(child: Divider(color: Colors.white38)),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Text(
-                    "OR",
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                ),
-                Expanded(child: Divider(color: Colors.white38)),
-              ],
-            ),
-
-            const SizedBox(height: 25),
-
-            OutlinedButton.icon(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Google Login"),
-                  ),
-                );
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.white,
-                side: const BorderSide(color: Colors.white54),
-                minimumSize: const Size(double.infinity, 55),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
-                ),
-              ),
-              icon: const Icon(Icons.g_mobiledata, size: 32),
-              label: const Text("Continue with Google"),
-            ),
-
             const SizedBox(height: 35),
 
             Row(

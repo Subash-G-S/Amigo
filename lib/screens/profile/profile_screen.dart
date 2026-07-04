@@ -10,6 +10,8 @@ import '../../widgets/profile/profile_tile.dart';
 import '../../services/auth_service.dart';
 import '../../models/search_user_model.dart';
 import 'edit_profile_screen.dart';
+import 'about_amigo_screen.dart';
+import 'appearance_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -107,6 +109,7 @@ Future<void> loadProfile() async {
               ProfileGradientHeader(
                 username: profile!.name,
                 email: profile!.email,
+                bio: profile!.bio,
               ),
 
               Padding(
@@ -115,70 +118,70 @@ Future<void> loadProfile() async {
                   children: [
 
                     /// PROFILE COMPLETION
-                    Card(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(22),
-                      ),
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.all(20),
-                        child: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                          children: [
+                    // Card(
+                    //   elevation: 0,
+                    //   shape: RoundedRectangleBorder(
+                    //     borderRadius:
+                    //         BorderRadius.circular(22),
+                    //   ),
+                    //   child: Padding(
+                    //     padding:
+                    //         const EdgeInsets.all(20),
+                    //     child: Column(
+                    //       crossAxisAlignment:
+                    //           CrossAxisAlignment.start,
+                    //       children: [
 
-                            const Row(
-                              children: [
+                    //         const Row(
+                    //           children: [
 
-                                Icon(
-                                  Icons.workspace_premium,
-                                  color: Colors.amber,
-                                ),
+                    //             Icon(
+                    //               Icons.workspace_premium,
+                    //               color: Colors.amber,
+                    //             ),
 
-                                SizedBox(width: 8),
+                    //             SizedBox(width: 8),
 
-                                Text(
-                                  "Profile Completion",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight:
-                                        FontWeight.bold,
-                                  ),
-                                ),
+                    //             Text(
+                    //               "Profile Completion",
+                    //               style: TextStyle(
+                    //                 fontSize: 18,
+                    //                 fontWeight:
+                    //                     FontWeight.bold,
+                    //               ),
+                    //             ),
 
-                              ],
-                            ),
+                    //           ],
+                    //         ),
 
-                            const SizedBox(height: 18),
+                    //         const SizedBox(height: 18),
 
-                            ClipRRect(
-                              borderRadius:
-                                  BorderRadius.circular(
-                                      12),
-                              child:
-                                  const LinearProgressIndicator(
-                                value: .75,
-                                minHeight: 10,
-                              ),
-                            ),
+                    //         ClipRRect(
+                    //           borderRadius:
+                    //               BorderRadius.circular(
+                    //                   12),
+                    //           child:
+                    //               const LinearProgressIndicator(
+                    //             value: .75,
+                    //             minHeight: 10,
+                    //           ),
+                    //         ),
 
-                            const SizedBox(height: 10),
+                    //         const SizedBox(height: 10),
 
-                            Text(
-                              "75% Complete",
-                              style: TextStyle(
-                                color:
-                                    Colors.grey.shade600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    //         Text(
+                    //           "75% Complete",
+                    //           style: TextStyle(
+                    //             color:
+                    //                 Colors.grey.shade600,
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
 
-                    const SizedBox(height: 24),
+                    // const SizedBox(height: 24),
 
                     /// STATS
                     Row(
@@ -256,11 +259,17 @@ Future<void> loadProfile() async {
                         ),
 
                         ProfileTile(
-                          icon:
-                              Icons.dark_mode_outlined,
-                          title: "Appearance",
-                          onTap: () {},
-                        ),
+  icon: Icons.dark_mode_outlined,
+  title: "Appearance",
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const AppearanceScreen(),
+      ),
+    );
+  },
+),
 
                         ProfileTile(
                           icon:
@@ -292,11 +301,17 @@ Future<void> loadProfile() async {
                         ),
 
                         ProfileTile(
-                          icon:
-                              Icons.info_outline,
-                          title: "About Amigo",
-                          onTap: () {},
-                        ),
+  icon: Icons.info_outline,
+  title: "About Amigo",
+  onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const AboutAmigoScreen(),
+      ),
+    );
+  },
+),
                       ],
                     ),
 

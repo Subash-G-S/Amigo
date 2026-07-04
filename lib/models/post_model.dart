@@ -3,6 +3,7 @@ class PostModel {
   final String author;
   final String content;
   final String createdAt;
+  final bool isAnonymous;
 
   int likes;
   int comments;
@@ -16,6 +17,7 @@ class PostModel {
     required this.likes,
     required this.comments,
     required this.liked,
+    required this.isAnonymous,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class PostModel {
       likes: json["likes"] ?? 0,
       comments: json["comments"] ?? 0,
       liked: json["liked"] ?? false,
+      isAnonymous: json["is_anonymous"] ?? false,
     );
   }
 }

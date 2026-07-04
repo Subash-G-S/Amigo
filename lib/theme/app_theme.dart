@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static ThemeData lightTheme = ThemeData(
+  static ThemeData light(MaterialColor color) {
+  return ThemeData(
     useMaterial3: true,
 
     colorScheme: ColorScheme.fromSeed(
-      seedColor: const Color(0xFF2575FC),
+      seedColor: color,
     ),
 
     scaffoldBackgroundColor: const Color(0xffF5F7FA),
@@ -39,11 +40,21 @@ class AppTheme {
     ),
 
     inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: Colors.white,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
       ),
     ),
   );
+}
+static ThemeData dark(MaterialColor color) {
+  return ThemeData(
+    useMaterial3: true,
+    brightness: Brightness.dark,
+
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: color,
+      brightness: Brightness.dark,
+    ),
+  );
+}
 }

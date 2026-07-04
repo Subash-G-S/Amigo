@@ -19,6 +19,7 @@ class _CreatePostScreenState
       TextEditingController();
 
   bool isLoading = false;
+  bool _isAnonymous = false;
 
   Future<void> createPost() async {
 
@@ -33,6 +34,7 @@ class _CreatePostScreenState
     bool success =
         await PostService().createPost(
       postController.text.trim(),
+      _isAnonymous,
     );
 
     if (!mounted) return;
@@ -79,11 +81,56 @@ class _CreatePostScreenState
         child: Column(
           children: [
 
-            CustomTextField(
-              controller: postController,
-              hint : "What's on your mind?",
-              icon : Icons.edit
-            ),
+            Container(
+  padding: const EdgeInsets.symmetric(
+    horizontal: 16,
+    vertical: 8,
+  ),
+  decoration: BoxDecoration(
+    color: Colors.grey.shade100,
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: Row(
+    children: [
+
+      Icon(
+        _isAnonymous
+            ? Icons.visibility_off
+            : Icons.person,
+      ),
+
+      const SizedBox(width: 10),
+
+      Text(
+        _isAnonymous
+            ? "Posting Anonymously"
+            : "Posting as Yourself",
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+
+      const Spacer(),
+
+      Switch(
+        value: _isAnonymous,
+        onChanged: (value) {
+          setState(() {
+            _isAnonymous = value;
+          });
+        },
+      ),
+    ],
+  ),
+),
+
+const SizedBox(height: 20),
+
+CustomTextField(
+  controller: postController,
+  hint: "What's on your mind?",
+  icon: Icons.edit,
+),
 
             const SizedBox(height: 20),
 
