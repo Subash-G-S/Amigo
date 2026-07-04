@@ -44,14 +44,6 @@ class ChatScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 30),
-
-              FilledButton.icon(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back),
-                label: const Text("Go Back"),
-              ),
             ],
           ),
         ),

@@ -11,6 +11,8 @@ import '../../services/auth_service.dart';
 import '../../models/search_user_model.dart';
 import 'edit_profile_screen.dart';
 import 'about_amigo_screen.dart';
+import 'follow_list_screen.dart';
+import '../../services/session_service.dart';
 import 'appearance_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -23,6 +25,7 @@ State<ProfileScreen> createState() =>
 class _ProfileScreenState
     extends State<ProfileScreen> {
   final AuthService _authService = AuthService();
+  String userId = "";
 
 SearchUserModel? profile;
 
@@ -34,6 +37,7 @@ void initState() {
 }
 
 Future<void> loadProfile() async {
+  userId = await SessionService.getUserId() ?? "";
 
   final result =
       await _authService.getMyProfile();
@@ -185,24 +189,48 @@ Future<void> loadProfile() async {
 
                     /// STATS
                     Row(
-                      children: [
+  children: [
 
-                        ProfileStats(
-                          title: "Posts",
-                          value: profile!.posts.toString(),
-                        ),
+    ProfileStats(
+      title: "Posts",
+      value: profile!.posts.toString(),
+    ),
 
-                        ProfileStats(
-                          title: "Followers",
-                          value: profile!.followers.toString(),
-                        ),
+    ProfileStats(
+      title: "Followers",
+      value: profile!.followers.toString(),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => FollowListScreen(
+              title: "Followers",
+              userId: userId,
+              followers: true,
+            ),
+          ),
+        );
+      },
+    ),
 
-                        ProfileStats(
-                          title: "Following",
-                          value: profile!.following.toString(),
-                        ),
-                      ],
-                    ),
+    ProfileStats(
+      title: "Following",
+      value: profile!.following.toString(),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => FollowListScreen(
+              title: "Following",
+              userId: userId,
+              followers: false,
+            ),
+          ),
+        );
+      },
+    ),
+  ],
+),
 
                     const SizedBox(height: 30),
 

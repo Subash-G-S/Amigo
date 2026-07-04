@@ -5,6 +5,7 @@ import '../models/user_model.dart';
 import '../config/app_config.dart';
 import '../models/search_user_model.dart';
 import 'token_service.dart';
+import '../models/follow_user_model.dart';
 
 
 class AuthService {
@@ -201,5 +202,40 @@ Future<void> updateProfile({
   if (response.statusCode != 200) {
     throw Exception("Failed to update profile");
   }
+}
+Future<List<FollowUserModel>> getFollowers(
+    String userId) async {
+
+  final response = await http.get(
+    Uri.parse(
+      "$baseUrl/follow/followers/$userId",
+    ),
+  );
+
+  final List data = jsonDecode(response.body);
+
+  return data
+      .map(
+        (e) => FollowUserModel.fromJson(e),
+      )
+      .toList();
+}
+
+Future<List<FollowUserModel>> getFollowing(
+    String userId) async {
+
+  final response = await http.get(
+    Uri.parse(
+      "$baseUrl/follow/following/$userId",
+    ),
+  );
+
+  final List data = jsonDecode(response.body);
+
+  return data
+      .map(
+        (e) => FollowUserModel.fromJson(e),
+      )
+      .toList();
 }
 }
