@@ -5,6 +5,7 @@ import '../../models/post_model.dart';
 import '../../providers/post_provider.dart';
 import '../../screens/comments/comment_screen.dart';
 import '../../utils/date_formatter.dart';
+import '../glass/glass_card.dart';
 
 class PostCard extends StatefulWidget {
   final PostModel post;
@@ -60,23 +61,13 @@ class _PostCardState extends State<PostCard>
         onTapDown: (_) => _controller.reverse(),
         onTapCancel: () => _controller.forward(),
         onTapUp: (_) => _controller.forward(),
-        child: Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 10,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(.05),
-                blurRadius: 20,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Padding(
+        child: Padding(
+  padding: const EdgeInsets.symmetric(
+    horizontal: 16,
+    vertical: 10,
+  ),
+  child: GlassCard(
+        child: Padding(
             padding: const EdgeInsets.all(18),
             child: Column(
               crossAxisAlignment:
@@ -110,6 +101,8 @@ class _PostCardState extends State<PostCard>
                         ),
                       ),
                     ),
+
+                    
 
                     const SizedBox(width: 14),
 
@@ -327,7 +320,7 @@ class _PostCardState extends State<PostCard>
                       ),
                     ),
 
-                    /// SHARE
+                                        /// SHARE
                     Expanded(
                       child: InkWell(
                         borderRadius:
@@ -336,18 +329,14 @@ class _PostCardState extends State<PostCard>
                           _tapAnimation();
                         },
                         child: const Padding(
-                          padding:
-                              EdgeInsets.symmetric(
+                          padding: EdgeInsets.symmetric(
                             vertical: 12,
                           ),
                           child: Row(
                             mainAxisAlignment:
                                 MainAxisAlignment.center,
                             children: [
-
-                              Icon(
-                                Icons.share_outlined,
-                              ),
+                              Icon(Icons.share_outlined),
 
                               SizedBox(width: 8),
 
@@ -363,13 +352,16 @@ class _PostCardState extends State<PostCard>
                         ),
                       ),
                     ),
+
                   ],
                 ),
+
               ],
             ),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

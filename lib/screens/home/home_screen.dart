@@ -6,6 +6,7 @@ import '../../providers/post_provider.dart';
 import '../../widgets/home/empty_feed.dart';
 import '../../widgets/home/post_card.dart';
 import '../create/create_post_screen.dart';
+import '../../widgets/glass/animated_background.dart';
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -33,13 +34,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final provider = context.watch<PostProvider>();
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF3F6FB),
+    return AnimatedBackground(
+      child : Scaffold(
+        backgroundColor: Colors.transparent,
 
-      appBar: AppBar(
-  backgroundColor: Colors.white,
-  elevation: 0,
-  centerTitle: true,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: true,
 
   title: const Text(
     "AMIGO",
@@ -180,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    ),
     );
   }
 }
