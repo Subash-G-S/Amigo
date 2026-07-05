@@ -7,6 +7,7 @@ import '../../widgets/home/empty_feed.dart';
 import '../../widgets/home/post_card.dart';
 import '../create/create_post_screen.dart';
 import '../../widgets/glass/animated_background.dart';
+import '../../widgets/home/home_top_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   final String username;
@@ -38,42 +39,19 @@ class _HomeScreenState extends State<HomeScreen> {
       child : Scaffold(
         backgroundColor: Colors.transparent,
 
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-
-  title: const Text(
-    "AMIGO",
-    style: TextStyle(
-      fontWeight: FontWeight.bold,
-      color: Colors.black,
-    ),
-  ),
-
-  actions: [
-    IconButton(
-      icon: const Icon(
-        Icons.add_circle_outline,
-        color: Colors.black,
-      ),
-      onPressed: () async {
-        final result = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const CreatePostScreen(),
-          ),
-        );
-
-        if (result == true) {
-          context.read<PostProvider>().loadFeed();
-        }
-      },
-    ),
-  ],
-),
-
       body: SafeArea(
+  child: Column(
+    children: [
+
+      const SizedBox(height: 20),
+
+      HomeTopBar(
+        username: widget.username,
+      ),
+
+      const SizedBox(height: 10),
+
+      Expanded(
         child: RefreshIndicator(
           onRefresh: provider.loadFeed,
           child: CustomScrollView(
@@ -102,24 +80,21 @@ class _HomeScreenState extends State<HomeScreen> {
           vertical: 16,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(.05),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.18),
+            width: 1.2,
+          )
         ),
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: Colors.indigo.shade100,
+              backgroundColor: Colors.white.withOpacity(0.08),
               child: Text(
                 widget.username[0].toUpperCase(),
                 style: const TextStyle(
-                  color: Colors.indigo,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -131,15 +106,16 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 "What's on your mind?",
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Colors.white70,
                   fontSize: 16,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
 
-            Icon(
-              Icons.edit_square,
-              color: Colors.indigo.shade400,
+            const Icon(
+              Icons.add_circle_outline,
+              color: Colors.white70,
             ),
           ],
         ),
@@ -182,7 +158,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    ],
     ),
+      ),
+      ),
     );
   }
 }

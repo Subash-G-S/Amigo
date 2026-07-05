@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import '../../models/comment_model.dart';
 import '../../services/comment_service.dart';
 import '../../utils/date_formatter.dart';
+import '../../widgets/comments/comment_card.dart';
+import '../../widgets/comments/comment_header.dart';
+import '../../widgets/comments/comment_input.dart';
+import '../../widgets/glass/animated_background.dart';
 
 class CommentScreen extends StatefulWidget {
   final String postId;
@@ -64,93 +68,64 @@ class _CommentScreenState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Comments"),
-      ),
-      body: Column(
-        children: [
+    return AnimatedBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
 
-          Expanded(
-            child: loading
+      body: SafeArea(
+  child: Column(
+    children: [
+
+      CommentHeader(
+        count: comments.length,
+      ),
+
+      Expanded(
+        child: loading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : comments.isEmpty
                 ? const Center(
-                    child:
-                        CircularProgressIndicator(),
+                    child: Text(
+                      "No comments yet",
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 18,
+                      ),
+                    ),
                   )
                 : ListView.builder(
+                    padding: const EdgeInsets.only(
+                      bottom: 120,
+                    ),
                     itemCount: comments.length,
                     itemBuilder: (context, index) {
 
                       final comment =
                           comments[index];
 
-                      return ListTile(
-                        leading:
-                            const CircleAvatar(
-                          child:
-                              Icon(Icons.person),
+                      return CommentCard(
+                        name: comment.author,
+                        comment: comment.content,
+                        time: DateFormatter.timeAgo(
+                          comment.createdAt,
                         ),
-                        title: Text(
-                            comment.author),
-                        subtitle: Column(
-                          crossAxisAlignment:
-                              CrossAxisAlignment
-                                  .start,
-                          children: [
-
-                            Text(
-                              comment.content,
-                            ),
-
-                            const SizedBox(
-                                height: 4),
-
-                            Text(
-                              DateFormatter.timeAgo(
-                                  comment
-                                      .createdAt),
-                              style:
-                                  const TextStyle(
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
+                        anonymous: false,
                       );
                     },
                   ),
-          ),
-
-          SafeArea(
-            child: Padding(
-              padding:
-                  const EdgeInsets.all(12),
-              child: Row(
-                children: [
-
-                  Expanded(
-                    child: TextField(
-                      controller: controller,
-                      decoration:
-                          const InputDecoration(
-                        hintText:
-                            "Write a comment...",
-                      ),
-                    ),
-                  ),
-
-                  IconButton(
-                    onPressed: sendComment,
-                    icon: const Icon(
-                      Icons.send,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
+
+      CommentInput(
+        controller: controller,
+        onSend: sendComment,
+      ),
+
+    ],
+  ),
+),
+    ),
     );
   }
 }

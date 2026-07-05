@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 
 class AnimatedBackground extends StatefulWidget {
@@ -26,33 +25,14 @@ class _AnimatedBackgroundState
 
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 30),
-    )..repeat();
+      duration: const Duration(seconds: 35),
+    )..repeat(reverse: true);
   }
 
   @override
   void dispose() {
     controller.dispose();
     super.dispose();
-  }
-
-  Widget orb({
-    required Color color,
-    required double size,
-  }) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: RadialGradient(
-          colors: [
-            color.withOpacity(.45),
-            Colors.transparent,
-          ],
-        ),
-      ),
-    );
   }
 
   @override
@@ -64,53 +44,65 @@ class _AnimatedBackgroundState
 
       builder: (_, __) {
 
-        final t = controller.value * 2 * pi;
+        return Container(
 
-        return Stack(
-          children: [
+          decoration: BoxDecoration(
 
-            Container(
-              color: const Color(0xff06070F),
-            ),
+            gradient: LinearGradient(
 
-            Positioned(
-              left: 40 + sin(t) * 60,
-              top: 80 + cos(t) * 45,
-              child: orb(
-                color: Colors.deepPurple,
-                size: 320,
+              begin: Alignment(
+                -1 + controller.value,
+                -1,
               ),
-            ),
 
-            Positioned(
-              right: 20 + cos(t * .7) * 50,
-              bottom: 80 + sin(t) * 70,
-              child: orb(
-                color: Colors.blue,
-                size: 280,
+              end: Alignment(
+                1,
+                1 - controller.value,
               ),
-            ),
 
-            Positioned(
-              top: 350 + sin(t * .4) * 80,
-              left: 160,
-              child: orb(
-                color: Colors.pinkAccent,
-                size: 240,
-              ),
-            ),
+              colors: const [
 
-            Positioned(
-              bottom: 250,
-              right: 160 + cos(t) * 50,
-              child: orb(
-                color: Colors.cyanAccent,
-                size: 200,
-              ),
-            ),
+                Color(0xffFFFDF8),
 
-            widget.child,
-          ],
+                Color(0xffFAF5EB),
+
+                Color(0xffF5EFD8),
+
+                Color(0xffE8D7A3),
+
+              ],
+            ),
+          ),
+          child: Stack(
+  children: [
+
+    Opacity(
+      opacity: .12,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment(
+              controller.value * 2 - 1,
+              -1,
+            ),
+            end: Alignment(
+              1,
+              controller.value * 2 - 1,
+            ),
+            colors: const [
+              Colors.transparent,
+              Color(0xffD4AF37),
+              Colors.transparent,
+            ],
+          ),
+        ),
+      ),
+      
+    ),
+
+    widget.child,
+  ],
+),
         );
       },
     );

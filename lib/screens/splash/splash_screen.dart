@@ -85,6 +85,10 @@ class _SplashScreenState extends State<SplashScreen>
 
       final token =
           await TokenService.getToken();
+          print("========================");
+print("Saved Token:");
+print(token);
+print("========================");
 
       await Future.delayed(
         const Duration(seconds: 2),
@@ -114,13 +118,18 @@ class _SplashScreenState extends State<SplashScreen>
 
     } catch (e) {
 
-      await TokenService.logout();
+  print("Splash Error:");
+  print(e);
 
-      await navigateTo(
-        const LoginScreen(),
-      );
+  // Only clear the session if the token is actually invalid.
+  if (e.toString().contains("401")) {
+    await TokenService.logout();
+  }
 
-    }
+  await navigateTo(
+    const LoginScreen(),
+  );
+}
   }
 
   @override

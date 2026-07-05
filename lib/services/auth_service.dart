@@ -123,19 +123,28 @@ Future<Map<String, dynamic>> resetPassword({
   );
 }
   Future<UserModel> getCurrentUser(
-      String token) async {
+    String token,
+) async {
 
-    final response = await http.get(
-      Uri.parse('$baseUrl/auth/me'),
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
+  final response = await http.get(
+    Uri.parse("$baseUrl/auth/me"),
+    headers: {
+      "Authorization": "Bearer $token",
+    },
+  );
 
-    return UserModel.fromJson(
-      jsonDecode(response.body),
+  if (response.statusCode != 200) {
+    throw Exception(
+      "Authentication failed (${response.statusCode})",
     );
   }
+
+  final data = jsonDecode(response.body);
+
+  return UserModel.fromJson(
+    data["user"],
+  );
+}
 
 Future<List<SearchUserModel>> searchUsers(
     String query) async {
