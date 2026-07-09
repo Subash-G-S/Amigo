@@ -115,6 +115,7 @@ Future<void> loadProfile() async {
                 email: profile!.email,
                 bio: profile!.bio,
                 profilePicture: profile!.profilePicture,
+                onProfileUpdated: loadProfile,
               ),
 
               Padding(
