@@ -8,6 +8,8 @@ class SearchUserModel {
   final int following;
   final String bio;
 
+  final String? profilePicture;
+
   SearchUserModel({
     required this.id,
     required this.name,
@@ -15,7 +17,8 @@ class SearchUserModel {
     required this.posts,
     required this.followers,
     required this.following,
-    required this.bio
+    required this.bio,
+    this.profilePicture,
   });
 
   factory SearchUserModel.fromJson(
@@ -27,7 +30,8 @@ class SearchUserModel {
       posts: json["posts"] ?? 0,
       followers: json["followers"] ?? 0,
       following: json["following"] ?? 0,
-      bio : json["bio"] ?? "",
+      bio: json["bio"] ?? "",
+      profilePicture: json["profile_picture"],
     );
   }
 }

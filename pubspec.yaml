@@ -31,7 +31,8 @@ dependencies:
 
   flutter:
     sdk: flutter
-  http: ^1.2.1
+  image_picker: ^1.1.2
+  http: ^1.2.2
   supabase_flutter: ^2.9.1
   flutter_dotenv: ^5.2.1
   provider: ^6.1.5+1

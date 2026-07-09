@@ -8,12 +8,14 @@ class ProfileGradientHeader
   final String username;
   final String email;
   final String bio;
+  final String? profilePicture;
 
   const ProfileGradientHeader({
     super.key,
     required this.username,
     required this.email,
     required this.bio,
+    this.profilePicture,
   });
 
   @override
@@ -64,6 +66,7 @@ class ProfileGradientHeader
 
           ProfileAvatar(
             username: username,
+            profilePicture: profilePicture,
           ),
 
           const SizedBox(height: 18),
