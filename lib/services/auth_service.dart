@@ -185,6 +185,8 @@ Future<SearchUserModel> getMyProfile() async {
       "Authorization": "Bearer $token",
     },
   );
+  print("PROFILE STATUS: ${response.statusCode}");
+  print("PROFILE BODY: ${response.body}");
 
   return SearchUserModel.fromJson(
     jsonDecode(response.body),

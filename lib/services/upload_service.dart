@@ -25,9 +25,12 @@ class UploadService {
     );
 
     final response = await request.send();
+    final body = await response.stream.bytesToString();
+    print("STATUS: ${response.statusCode}");
+    print("BODY: $body");
 
     if (response.statusCode == 200) {
-      final body = await response.stream.bytesToString();
+      
 
       final json = jsonDecode(body);
 
