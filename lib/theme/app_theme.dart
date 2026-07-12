@@ -1,60 +1,90 @@
 import 'package:flutter/material.dart';
 
+import 'app_colors.dart';
+
 class AppTheme {
-  static ThemeData light(MaterialColor color) {
-  return ThemeData(
+  static ThemeData light = ThemeData(
     useMaterial3: true,
 
+    fontFamily: "Inter",
+
+    scaffoldBackgroundColor: AppColors.background,
+
+    splashColor: Colors.transparent,
+    highlightColor: Colors.transparent,
+
     colorScheme: ColorScheme.fromSeed(
-      seedColor: color,
+      seedColor: AppColors.primary,
+      brightness: Brightness.light,
     ),
 
-    scaffoldBackgroundColor: const Color(0xffF5F7FA),
-
     appBarTheme: const AppBarTheme(
-      centerTitle: false,
+      backgroundColor: Colors.white,
       elevation: 0,
-      backgroundColor: Colors.transparent,
-      foregroundColor: Colors.black,
+      surfaceTintColor: Colors.transparent,
+      foregroundColor: AppColors.textPrimary,
+      centerTitle: false,
     ),
 
     cardTheme: CardThemeData(
-      elevation: 2,
       color: Colors.white,
-      margin: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 8,
-      ),
+      elevation: 0,
+      margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
-    ),
-
-    elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size.fromHeight(52),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(
+          color: AppColors.border,
         ),
       ),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.white,
+
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 18,
+        vertical: 16,
+      ),
+
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(
+          color: AppColors.border,
+        ),
+      ),
+
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(
+          color: AppColors.border,
+        ),
+      ),
+
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide(
+          color: AppColors.primary,
+          width: 2,
+        ),
       ),
     ),
-  );
-}
-static ThemeData dark(MaterialColor color) {
-  return ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.dark,
 
-    colorScheme: ColorScheme.fromSeed(
-      seedColor: color,
-      brightness: Brightness.dark,
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        minimumSize: const Size(double.infinity, 56),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+    ),
+
+    dividerTheme: const DividerThemeData(
+      thickness: 1,
+      color: AppColors.border,
     ),
   );
-}
 }

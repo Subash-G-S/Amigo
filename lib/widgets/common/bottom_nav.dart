@@ -84,7 +84,7 @@ class _BottomNavState extends State<BottomNav> {
               height: 4,
               width: selected ? 26 : 0,
               decoration: BoxDecoration(
-                color: const Color(0xff7C4DFF),
+                color: const Color(0xFF8B6F47),
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
@@ -97,8 +97,8 @@ class _BottomNavState extends State<BottomNav> {
               child: Icon(
                 icon,
                 color: selected
-                    ? const Color(0xff7C4DFF)
-                    : Colors.grey,
+                    ? const Color(0xFF8B6F47)
+                    : const Color(0xFF9E9E9E),
                 size: 28,
               ),
             ),
@@ -112,25 +112,25 @@ Widget buildNavigationBar() {
   return SafeArea(
     child: Padding(
       padding: const EdgeInsets.fromLTRB(
-        18,
+        16,
         0,
-        18,
-        18,
+        16,
+        12,
       ),
       child: Container(
-        height: 78,
+        height: 70,
 
         decoration: BoxDecoration(
-          color: const Color(0xFF171E2F),
-          borderRadius: BorderRadius.circular(30),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(22),
           border: Border.all(
-            color: Colors.white10,
+            color: const Color(0xFFEAEAEA),
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(.35),
-              blurRadius: 35,
-              offset: const Offset(0, 15),
+              color: Colors.black.withOpacity(.08),
+              blurRadius: 25,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
@@ -167,12 +167,7 @@ Widget buildNavigationBar() {
                     height: 58,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(0xff7C4DFF),
-                          Color(0xff2196F3),
-                        ],
-                      ),
+                      color: const Color(0xFF8B6F47),
                     ),
                     child: const Icon(
                       Icons.add,

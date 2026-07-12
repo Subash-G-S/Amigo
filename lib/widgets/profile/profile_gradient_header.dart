@@ -28,39 +28,24 @@ class ProfileGradientHeader
       width: double.infinity,
 
       padding: const EdgeInsets.only(
-        top: 35,
-        bottom: 28,
+        top: 45,
+        bottom: 32,
       ),
 
-      decoration: const BoxDecoration(
-
-        gradient: LinearGradient(
-
-          colors: [
-
-            Color(0xff6A11CB),
-
-            Color(0xff2575FC),
-
-          ],
-
-          begin: Alignment.topLeft,
-
-          end: Alignment.bottomRight,
-
-        ),
-
-        borderRadius: BorderRadius.only(
-
-          bottomLeft:
-              Radius.circular(36),
-
-          bottomRight:
-              Radius.circular(36),
-
-        ),
-
-      ),
+      decoration: BoxDecoration(
+  color: Color(0xff555555),
+  borderRadius: const BorderRadius.only(
+    bottomLeft: Radius.circular(28),
+    bottomRight: Radius.circular(28),
+  ),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black.withOpacity(.06),
+      blurRadius: 18,
+      offset: const Offset(0, 6),
+    ),
+  ],
+),
 
       child: Column(
 
@@ -77,10 +62,10 @@ class ProfileGradientHeader
           Text(
             username,
             style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
+              color: Color(0xff222222),
+              fontSize: 26,
               fontWeight:
-                  FontWeight.bold,
+                  FontWeight.w700,
             ),
           ),
 
@@ -89,7 +74,7 @@ class ProfileGradientHeader
           Text(
             email,
             style: const TextStyle(
-              color: Colors.white70,
+              color: Colors.grey,
             ),
           ),
           const SizedBox(height: 10),

@@ -62,9 +62,9 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.blue.withOpacity(.25),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
+                    color: Colors.blue.withOpacity(.10),
+                    blurRadius: 18,
+                    offset: const Offset(0, 8),
                   )
                 ],
               ),

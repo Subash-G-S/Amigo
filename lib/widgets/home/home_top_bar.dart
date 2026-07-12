@@ -20,10 +20,10 @@ class HomeTopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-        20,
+        18,
+        8,
+        18,
         12,
-        20,
-        20,
       ),
       child: Row(
         children: [
@@ -37,19 +37,20 @@ class HomeTopBar extends StatelessWidget {
                 Text(
                   greeting(),
                   style: TextStyle(
-                    color: Colors.grey.shade400,
-                    fontSize: 15,
+                    color: Color(0xff8B8B8B),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
 
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
 
                 Text(
                   username,
                   style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xff2D2D2D),
                   ),
                 ),
               ],
@@ -72,21 +73,28 @@ class HomeTopBar extends StatelessWidget {
   }
 
   Widget _icon(IconData icon) {
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(.08),
-        borderRadius:
-            BorderRadius.circular(16),
-        border: Border.all(
-          color: Colors.white12,
+  return Container(
+    width: 46,
+    height: 46,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(14),
+      border: Border.all(
+        color: const Color(0xffECECEC),
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(.05),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
         ),
-      ),
-      child: Icon(
-        icon,
-        color: Colors.white,
-      ),
-    );
-  }
+      ],
+    ),
+    child: Icon(
+      icon,
+      size: 22,
+      color: const Color(0xff8B6F47),
+    ),
+  );
+}
 }

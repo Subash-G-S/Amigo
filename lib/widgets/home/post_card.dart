@@ -5,7 +5,7 @@ import '../../models/post_model.dart';
 import '../../providers/post_provider.dart';
 import '../../screens/comments/comment_screen.dart';
 import '../../utils/date_formatter.dart';
-import '../glass/glass_card.dart';
+
 
 class PostCard extends StatefulWidget {
   final PostModel post;
@@ -62,13 +62,29 @@ class _PostCardState extends State<PostCard>
         onTapCancel: () => _controller.forward(),
         onTapUp: (_) => _controller.forward(),
         child: Padding(
-  padding: const EdgeInsets.symmetric(
-    horizontal: 16,
-    vertical: 10,
+  padding: const EdgeInsets.fromLTRB(
+    16,
+    6,
+    16,
+    6,
   ),
-  child: GlassCard(
+  child: Container(
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(22),
+    border: Border.all(
+      color: const Color(0xffECECEC),
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(.05),
+        blurRadius: 18,
+        offset: const Offset(0, 6),
+      ),
+    ],
+  ),
         child: Padding(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment:
                   CrossAxisAlignment.start,
@@ -79,32 +95,38 @@ class _PostCardState extends State<PostCard>
                   children: [
 
                     Hero(
-                      tag: "avatar_${post.id}",
-                      child: CircleAvatar(
-                        radius: 24,
-                        backgroundColor: post.isAnonymous
-    ? Colors.deepPurple.shade100
-    : Colors.indigo.shade100,
-                        child: post.isAnonymous
-                            ? const Icon(
-                                Icons.visibility_off,
-                                color: Colors.deepPurple,
-                            )
-                            : Text(
-                          post.author[0].toUpperCase(),
-                          style: const TextStyle(
-                            fontWeight:
-                                FontWeight.bold,
-                            color: Colors.indigo,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
+  tag: "avatar_${post.id}",
+  child: Container(
+    padding: const EdgeInsets.all(2),
+    decoration: BoxDecoration(
+      shape: BoxShape.circle,
+      border: Border.all(
+        color: const Color(0xffECECEC),
+      ),
+    ),
+    child: CircleAvatar(
+      radius: 18,
+      backgroundColor: const Color(0xffF4EFE8),
+      child: post.isAnonymous
+          ? const Icon(
+              Icons.visibility_off,
+              color: Color(0xff8B6F47),
+            )
+          : Text(
+              post.author[0].toUpperCase(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xff8B6F47),
+                fontSize: 16,
+              ),
+            ),
+    ),
+  ),
+),
 
                     
 
-                    const SizedBox(width: 14),
+                    const SizedBox(width: 8),
 
                     Expanded(
                       child: Column(
@@ -117,19 +139,22 @@ class _PostCardState extends State<PostCard>
       ? "Anonymous"
       : post.author,
                             style: const TextStyle(
-                              fontSize: 17,
+                              fontSize: 14,
                               fontWeight:
-                                  FontWeight.bold,
+                                  FontWeight.w700,
+                                  letterSpacing: .2,
+                                  color: Color(0xff222222),
                             ),
                           ),
 
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 2),
 
                           Text(
   "${post.isAnonymous ? "Anonymous • " : ""}${DateFormatter.timeAgo(post.createdAt)}",
   style: TextStyle(
-    color: Colors.grey.shade600,
-    fontSize: 12,
+    color: Color(0xff8A8A8A),
+    fontSize: 11,
+    fontWeight: FontWeight.w500,
   ),
 ),
                         ],
@@ -137,70 +162,47 @@ class _PostCardState extends State<PostCard>
                     ),
 
                     IconButton(
+                      splashRadius: 20,
                       onPressed: () {},
                       icon: const Icon(
-                        Icons.more_horiz,
+                        Icons.more_vert,
+                        size: 20,
+                        color: Color(0xff666666),
                       ),
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 10),
 
                 /// POST CONTENT
-                SelectableText(
+                Text(
                   post.content,
                   style: const TextStyle(
-                    fontSize: 16,
-                    height: 1.6,
+                    fontSize: 14,
+                    height: 1.45,
+                    color: Color(0xff2B2B2B),
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 12),
 
                 /// COUNTS
-                Row(
-                  children: [
-
-                    const Icon(
-                      Icons.favorite,
-                      size: 16,
-                      color: Colors.red,
-                    ),
-
-                    const SizedBox(width: 6),
-
-                    Text(
-                      "${post.likes}",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    const SizedBox(width: 18),
-
-                    const Icon(
-                      Icons.chat_bubble_outline,
-                      size: 16,
-                      color: Colors.blueGrey,
-                    ),
-
-                    const SizedBox(width: 6),
-
-                    Text(
-                      "${post.comments} Comments",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
+                Text(
+  "${post.likes} Likes • ${post.comments} Comments",
+  style: const TextStyle(
+    color: Color(0xff777777),
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+  ),
+),
 
                 const SizedBox(height: 14),
 
-                Divider(
-                  color: Colors.grey.shade300,
-                ),
+                const Divider(
+  color: Color(0xffECECEC),
+  height: 18,
+),
 
                 Row(
                   children: [
@@ -209,7 +211,7 @@ class _PostCardState extends State<PostCard>
                     Expanded(
                       child: InkWell(
                         borderRadius:
-                            BorderRadius.circular(14),
+                            BorderRadius.circular(100),
                         onTap: () {
                           _tapAnimation();
 
@@ -220,7 +222,7 @@ class _PostCardState extends State<PostCard>
                         child: Padding(
                           padding:
                               const EdgeInsets.symmetric(
-                            vertical: 12,
+                            vertical: 10,
                           ),
                           child: Row(
                             mainAxisAlignment:
@@ -245,6 +247,7 @@ class _PostCardState extends State<PostCard>
                                   post.liked
                                       ? Icons.favorite
                                       : Icons.favorite_border,
+                                  size: 24,
                                   key: ValueKey(
                                     post.liked,
                                   ),
@@ -254,18 +257,7 @@ class _PostCardState extends State<PostCard>
                                 ),
                               ),
 
-                              const SizedBox(width: 8),
-
-                              Text(
-                                "Like",
-                                style: TextStyle(
-                                  fontWeight:
-                                      FontWeight.w600,
-                                  color: post.liked
-                                      ? Colors.red
-                                      : Colors.grey,
-                                ),
-                              ),
+                              const SizedBox()
                             ],
                           ),
                         ),
@@ -276,7 +268,7 @@ class _PostCardState extends State<PostCard>
                     Expanded(
                       child: InkWell(
                         borderRadius:
-                            BorderRadius.circular(14),
+                            BorderRadius.circular(100),
                         onTap: () {
 
                           _tapAnimation();
@@ -294,7 +286,7 @@ class _PostCardState extends State<PostCard>
                         child: const Padding(
                           padding:
                               EdgeInsets.symmetric(
-                            vertical: 12,
+                            vertical: 14,
                           ),
                           child: Row(
                             mainAxisAlignment:
@@ -302,18 +294,11 @@ class _PostCardState extends State<PostCard>
                             children: [
 
                               Icon(
-                                Icons.chat_bubble_outline,
+                                Icons.chat_bubble_outline_rounded,
+                                size: 24,
                               ),
 
-                              SizedBox(width: 8),
-
-                              Text(
-                                "Comment",
-                                style: TextStyle(
-                                  fontWeight:
-                                      FontWeight.w600,
-                                ),
-                              ),
+                              const SizedBox()
                             ],
                           ),
                         ),
@@ -324,29 +309,24 @@ class _PostCardState extends State<PostCard>
                     Expanded(
                       child: InkWell(
                         borderRadius:
-                            BorderRadius.circular(14),
+                            BorderRadius.circular(100),
                         onTap: () {
                           _tapAnimation();
                         },
                         child: const Padding(
                           padding: EdgeInsets.symmetric(
-                            vertical: 12,
+                            vertical: 14,
                           ),
                           child: Row(
                             mainAxisAlignment:
                                 MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.share_outlined),
-
-                              SizedBox(width: 8),
-
-                              Text(
-                                "Share",
-                                style: TextStyle(
-                                  fontWeight:
-                                      FontWeight.w600,
-                                ),
+                              Icon(
+                                Icons.send_rounded,
+                                size: 23,
                               ),
+
+                              const SizedBox()
                             ],
                           ),
                         ),

@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 
-class AppText {
+import 'app_colors.dart';
 
-  static const display = TextStyle(
-    fontSize: 34,
+class AppText {
+  static const title = TextStyle(
+    fontSize: 26,
     fontWeight: FontWeight.bold,
+    color: AppColors.textPrimary,
   );
 
   static const heading = TextStyle(
-    fontSize: 28,
-    fontWeight: FontWeight.bold,
-  );
-
-  static const title = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w700,
+    color: AppColors.textPrimary,
   );
 
   static const body = TextStyle(
     fontSize: 16,
-    height: 1.5,
+    color: AppColors.textPrimary,
   );
 
-  static const caption = TextStyle(
-    fontSize: 13,
-    color: Colors.grey,
+  static const subtitle = TextStyle(
+    fontSize: 14,
+    color: AppColors.textSecondary,
   );
-
 }

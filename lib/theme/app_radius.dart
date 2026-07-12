@@ -1,13 +1,11 @@
 class AppRadius {
+  static const xs = 8.0;
 
-  static const double xs = 8;
+  static const sm = 12.0;
 
-  static const double sm = 12;
+  static const md = 16.0;
 
-  static const double md = 18;
+  static const lg = 20.0;
 
-  static const double lg = 24;
-
-  static const double xl = 32;
-
+  static const xl = 28.0;
 }

@@ -6,7 +6,7 @@ import '../../providers/post_provider.dart';
 import '../../widgets/home/empty_feed.dart';
 import '../../widgets/home/post_card.dart';
 import '../create/create_post_screen.dart';
-import '../../widgets/glass/animated_background.dart';
+
 import '../../widgets/home/home_top_bar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,15 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final provider = context.watch<PostProvider>();
 
-    return AnimatedBackground(
-      child : Scaffold(
-        backgroundColor: Colors.transparent,
+    return Scaffold(
+      backgroundColor: const Color(0xffF7F5F2),
 
       body: SafeArea(
   child: Column(
     children: [
 
-      const SizedBox(height: 20),
+      const SizedBox(height: 12),
 
       HomeTopBar(
         username: widget.username,
@@ -81,20 +80,27 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         decoration: BoxDecoration(
           color: Colors.transparent,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(18),
           border: Border.all(
-            color: Colors.white.withOpacity(0.18),
+            color: const Color(0xffE8E4DE),
             width: 1.2,
-          )
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(.05),
+              blurRadius: 16,
+              offset: const Offset(0, 6),
+            ),
+          ],
         ),
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: Colors.white.withOpacity(0.08),
+              backgroundColor: const Color(0xffF4EFE8),
               child: Text(
                 widget.username[0].toUpperCase(),
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: const Color(0xff8B6F47),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -106,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 "What's on your mind?",
                 style: TextStyle(
-                  color: Colors.white70,
+                  color: const Color(0xff8B6F47),
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),
@@ -115,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             const Icon(
               Icons.add_circle_outline,
-              color: Colors.white70,
+              color: const Color(0xff8B6F47),
             ),
           ],
         ),
@@ -161,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ],
     ),
       ),
-      ),
+      
     );
   }
 }
