@@ -1,17 +1,270 @@
-# amigo
+# 🚀 Amigo
 
-A new Flutter project.
+> A modern social networking platform built with Flutter and FastAPI.
 
-## Getting Started
+Amigo is a cross-platform social media application designed with a clean, professional UI and a scalable backend architecture. It allows users to create posts, interact with others, manage profiles, and build connections in a modern social environment.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+# 📱 Features
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+### 👤 Authentication
+- User Registration
+- Secure Login
+- JWT Authentication
+- Forgot Password
+- OTP Verification
+- Password Reset
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+### 📰 Feed
+- Create Posts
+- View Feed
+- Like Posts
+- Comment on Posts
+- Share Button (UI)
+- Pull-to-Refresh
+
+---
+
+### 👥 Social
+- Follow Users
+- Followers List
+- Following List
+- User Search
+- User Profiles
+
+---
+
+### 🙍 Profile
+- Edit Profile
+- Bio Support
+- Profile Statistics
+- Profile Picture Upload
+- Cloudinary Image Storage
+
+---
+
+### 🎨 UI
+- Modern White & Beige Theme
+- Material 3 Design
+- Responsive Layout
+- Smooth Animations
+- Professional Card Design
+- Clean Navigation
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+- Flutter
+- Provider
+- HTTP
+- Flutter Dotenv
+- Image Picker
+
+### Backend
+- FastAPI
+- SQLAlchemy
+- PostgreSQL
+- Alembic
+- JWT Authentication
+- Cloudinary
+
+### Deployment
+- Render
+- GitHub Releases
+- GitHub Pages
+
+---
+
+# 📂 Project Structure
+
+```
+amigo/
+│
+├── frontend/
+│   ├── screens/
+│   ├── widgets/
+│   ├── services/
+│   ├── models/
+│   ├── providers/
+│   └── theme/
+│
+├── backend/
+│   ├── routes/
+│   ├── models/
+│   ├── schemas/
+│   ├── services/
+│   ├── database/
+│   └── alembic/
+│
+└── README.md
+```
+
+---
+
+# 🚀 Getting Started
+
+## Clone Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/amigo.git
+```
+
+---
+
+## Frontend
+
+```bash
+cd amigo
+flutter pub get
+```
+
+Create a `.env`
+
+```
+API_BASE_URL=https://your-api-url.onrender.com
+```
+
+Run
+
+```bash
+flutter run
+```
+
+---
+
+## Backend
+
+Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Create `.env`
+
+```
+DATABASE_URL=
+
+SECRET_KEY=
+
+ALGORITHM=HS256
+
+ACCESS_TOKEN_EXPIRE_MINUTES=1440
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+Run
+
+```bash
+uvicorn main:app --reload
+```
+
+---
+
+## Database Migration
+
+Create migration
+
+```bash
+alembic revision --autogenerate -m "message"
+```
+
+Apply migration
+
+```bash
+alembic upgrade head
+```
+
+---
+
+# 📸 Screenshots
+
+> Screenshots coming soon.
+
+---
+
+# 📦 APK
+
+Download the latest release from the **Releases** section.
+
+---
+
+# 🗺 Roadmap
+
+### ✅ Completed
+- Authentication
+- Feed
+- Posts
+- Likes
+- Comments
+- Follow System
+- Search
+- Profile Editing
+- Profile Pictures
+- Modern UI
+- GitHub Releases
+
+### 🚧 In Progress
+- Notifications
+- Real-time Chat
+- Post Images
+- Saved Posts
+- Push Notifications
+
+### 📅 Planned
+- Reels
+- Stories
+- Groups
+- Video Uploads
+- AI Content Moderation
+- Dark Mode
+- Admin Dashboard
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create your feature branch
+
+```bash
+git checkout -b feature/new-feature
+```
+
+3. Commit changes
+
+```bash
+git commit -m "Add feature"
+```
+
+4. Push
+
+```bash
+git push origin feature/new-feature
+```
+
+5. Open a Pull Request
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 👨‍💻 Author
+
+**Subash**
+
+Built with ❤️ using Flutter & FastAPI.
