@@ -4,18 +4,12 @@ import '../../services/token_service.dart';
 import '../auth/login_screen.dart';
 
 import '../../widgets/profile/profile_gradient_header.dart';
-import '../../widgets/profile/profile_section.dart';
-import '../../widgets/profile/profile_stats.dart';
-import '../../widgets/profile/profile_tile.dart';
 import '../../services/auth_service.dart';
 import 'package:provider/provider.dart';
 import '../../providers/post_provider.dart';
 import '../../models/search_user_model.dart';
-import 'edit_profile_screen.dart';
-import 'about_amigo_screen.dart';
 import 'follow_list_screen.dart';
 import '../../services/session_service.dart';
-import 'appearance_screen.dart';
 import '../../widgets/home/post_card.dart';
 
 class ProfileScreen extends StatefulWidget {
