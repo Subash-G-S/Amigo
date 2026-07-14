@@ -52,4 +52,24 @@ class PostService {
 
   return response.statusCode == 200;
 }
+Future<List<PostModel>> getMyPosts() async {
+  final token = await TokenService.getToken();
+
+  final response = await http.get(
+    Uri.parse("$baseUrl/posts/me"),
+    headers: {
+      "Authorization": "Bearer $token",
+    },
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception("Failed to load posts");
+  }
+
+  final List data = jsonDecode(response.body);
+
+  return data
+      .map((e) => PostModel.fromJson(e))
+      .toList();
+}
 }

@@ -8,12 +8,15 @@ import '../../widgets/profile/profile_section.dart';
 import '../../widgets/profile/profile_stats.dart';
 import '../../widgets/profile/profile_tile.dart';
 import '../../services/auth_service.dart';
+import 'package:provider/provider.dart';
+import '../../providers/post_provider.dart';
 import '../../models/search_user_model.dart';
 import 'edit_profile_screen.dart';
 import 'about_amigo_screen.dart';
 import 'follow_list_screen.dart';
 import '../../services/session_service.dart';
 import 'appearance_screen.dart';
+import '../../widgets/home/post_card.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -34,6 +37,9 @@ bool loading = true;
 void initState() {
   super.initState();
   loadProfile();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    context.read<PostProvider>().loadMyPosts();
+  });
 }
 
 Future<void> loadProfile() async {
@@ -190,183 +196,141 @@ Future<void> loadProfile() async {
                     // const SizedBox(height: 24),
 
                     /// STATS
-                    Row(
-  children: [
+                    Container(
+  margin: const EdgeInsets.only(bottom: 28),
+  padding: const EdgeInsets.symmetric(
+    vertical: 20,
+  ),
+  decoration: BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(18),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(.05),
+        blurRadius: 15,
+        offset: const Offset(0, 6),
+      ),
+    ],
+  ),
+  child: Row(
+    children: [
 
-    ProfileStats(
-      title: "Posts",
-      value: profile!.posts.toString(),
-    ),
+      Expanded(
+        child: _statItem(
+          "Posts",
+          profile!.posts.toString(),
+          null,
+        ),
+      ),
 
-    ProfileStats(
-      title: "Followers",
-      value: profile!.followers.toString(),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => FollowListScreen(
-              title: "Followers",
-              userId: userId,
-              followers: true,
-            ),
-          ),
-        );
-      },
-    ),
+      Container(
+        width: 1,
+        height: 42,
+        color: const Color(0xffECECEC),
+      ),
 
-    ProfileStats(
-      title: "Following",
-      value: profile!.following.toString(),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => FollowListScreen(
-              title: "Following",
-              userId: userId,
-              followers: false,
-            ),
-          ),
-        );
-      },
+      Expanded(
+        child: _statItem(
+          "Followers",
+          profile!.followers.toString(),
+          () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => FollowListScreen(
+                  title: "Followers",
+                  userId: userId,
+                  followers: true,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+
+      Container(
+        width: 1,
+        height: 42,
+        color: const Color(0xffECECEC),
+      ),
+
+      Expanded(
+        child: _statItem(
+          "Following",
+          profile!.following.toString(),
+          () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => FollowListScreen(
+                  title: "Following",
+                  userId: userId,
+                  followers: false,
+                ),
+              ),
+            );
+          },
+          
+        ),
+      ),
+
+    ],
+  ),
+),
+const SizedBox(height: 30),
+
+Align(
+  alignment: Alignment.centerLeft,
+  child: Text(
+    "Recent Posts",
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
     ),
-  ],
+  ),
 ),
 
-                    const SizedBox(height: 30),
+const SizedBox(height: 18),
 
+Consumer<PostProvider>(
+  builder: (_, provider, __) {
+
+    if (provider.loading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (provider.myPosts.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(40),
+        child: Center(
+          child: Text(
+            "No posts yet.",
+          ),
+        ),
+      );
+    }
+
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: provider.myPosts.length,
+      itemBuilder: (_, index) {
+        return PostCard(
+          post: provider.myPosts[index],
+        );
+      },
+    );
+  },
+)
                     /// GENERAL
-                    ProfileSection(
-                      title: "General",
-                      children: [
-
-                        ProfileTile(
-                          icon: Icons.edit,
-                          title: "Edit Profile",
-                          onTap: () async {
-
-  final updated = await Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (_) => const EditProfileScreen(),
-    ),
-  );
-
-  if (updated == true) {
-    loadProfile();
-  }
-
-},
-                        ),
-
-                        ProfileTile(
-                          icon: Icons.favorite_border,
-                          title: "Liked Posts",
-                          onTap: () {},
-                        ),
-
-                        ProfileTile(
-                          icon: Icons.bookmark_border,
-                          title: "Saved Posts",
-                          onTap: () {},
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 22),
-
+                    
                     /// PREFERENCES
-                    ProfileSection(
-                      title: "Preferences",
-                      children: [
-
-                        ProfileTile(
-                          icon:
-                              Icons.notifications_none,
-                          title: "Notifications",
-                          onTap: () {},
-                        ),
-
-                        ProfileTile(
-  icon: Icons.dark_mode_outlined,
-  title: "Appearance",
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const AppearanceScreen(),
-      ),
-    );
-  },
-),
-
-                        ProfileTile(
-                          icon:
-                              Icons.lock_outline,
-                          title: "Privacy",
-                          onTap: () {},
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 22),
-
+                    
                     /// SUPPORT
-                    ProfileSection(
-                      title: "Support",
-                      children: [
-
-                        ProfileTile(
-                          icon:
-                              Icons.help_outline,
-                          title: "Help Center",
-                          onTap: () {},
-                        ),
-
-                        ProfileTile(
-                          icon: Icons.star_border,
-                          title: "Rate Amigo",
-                          onTap: () {},
-                        ),
-
-                        ProfileTile(
-  icon: Icons.info_outline,
-  title: "About Amigo",
-  onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const AboutAmigoScreen(),
-      ),
-    );
-  },
-),
-                      ],
-                    ),
-
-                    const SizedBox(height: 22),
-
+                    
                     /// LOGOUT
-                    ProfileSection(
-                      title: "Account",
-                      children: [
-
-                        ProfileTile(
-                          icon: Icons.logout,
-                          title: "Logout",
-                          color: Colors.red,
-                          onTap: () {
-                            showLogoutDialog(
-                              context,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 40),
-
                   ],
                 ),
               ),
@@ -376,4 +340,38 @@ Future<void> loadProfile() async {
       ),
     );
   }
+  Widget _statItem(
+  String title,
+  String value,
+  VoidCallback? onTap,
+) {
+  return InkWell(
+    onTap: onTap,
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+            color: Color(0xff222222),
+          ),
+        ),
+
+        const SizedBox(height: 6),
+
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 13,
+            color: Color(0xff888888),
+          ),
+        ),
+
+      ],
+    ),
+  );
+}
 }

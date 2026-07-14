@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'profile_menu_sheet.dart';
 import 'profile_avatar.dart';
 
 class ProfileGradientHeader
@@ -27,72 +27,127 @@ class ProfileGradientHeader
 
       width: double.infinity,
 
-      padding: const EdgeInsets.only(
-        top: 45,
-        bottom: 32,
+      padding: const EdgeInsets.fromLTRB(
+        24,
+        28,
+        24,
+        24,
       ),
 
       decoration: BoxDecoration(
-  color: Color(0xff555555),
+  color: Colors.white,
   borderRadius: const BorderRadius.only(
     bottomLeft: Radius.circular(28),
     bottomRight: Radius.circular(28),
   ),
   boxShadow: [
     BoxShadow(
-      color: Colors.black.withOpacity(.06),
+      color: Colors.black.withOpacity(.05),
       blurRadius: 18,
       offset: const Offset(0, 6),
     ),
   ],
 ),
 
-      child: Column(
+      child: Stack(
+  children: [
 
+    Align(
+      alignment: Alignment.topRight,
+      child: IconButton(
+        icon: const Icon(
+          Icons.more_vert,
+          color: Color(0xff444444),
+        ),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
+            ),
+            builder: (_) => const ProfileMenuSheet(),
+          );
+        },
+      ),
+    ),
+
+    Padding(
+  padding: const EdgeInsets.only(top: 12),
+  child: Column(
+    children: [
+
+      ProfileAvatar(
+        username: username,
+        profilePicture: profilePicture,
+        onProfileUpdated: onProfileUpdated,
+      ),
+
+      const SizedBox(height: 18),
+
+      Text(
+        username,
+        style: const TextStyle(
+          fontSize: 26,
+          fontWeight: FontWeight.w700,
+          color: Color(0xff222222),
+        ),
+      ),
+
+      const SizedBox(height: 4),
+
+      Text(
+        "@${username.toLowerCase().replaceAll(" ", "")}",
+        style: const TextStyle(
+          fontSize: 14,
+          color: Color(0xff888888),
+        ),
+      ),
+
+      const SizedBox(height: 14),
+
+      Text(
+        bio.isEmpty ? "No bio yet." : bio,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 15,
+          color: Color(0xff555555),
+          height: 1.5,
+        ),
+      ),
+
+      const SizedBox(height: 22),
+
+      Row(
         children: [
 
-          ProfileAvatar(
-            username: username,
-            profilePicture: profilePicture,
-            onProfileUpdated: onProfileUpdated,
-          ),
-
-          const SizedBox(height: 18),
-
-          Text(
-            username,
-            style: const TextStyle(
-              color: Color(0xff222222),
-              fontSize: 26,
-              fontWeight:
-                  FontWeight.w700,
+          Expanded(
+            child: FilledButton(
+              onPressed: () {},
+              child: const Text("Edit Profile"),
             ),
           ),
 
-          const SizedBox(height: 6),
+          const SizedBox(width: 12),
 
-          Text(
-            email,
-            style: const TextStyle(
-              color: Colors.grey,
+          SizedBox(
+            width: 56,
+            child: OutlinedButton(
+              onPressed: () {},
+              child: const Icon(Icons.share),
             ),
           ),
-          const SizedBox(height: 10),
 
-Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 30),
-  child: Text(
-    bio.isEmpty ? "No bio yet." : bio,
-    textAlign: TextAlign.center,
-    style: const TextStyle(
-      color: Colors.white,
-      fontSize: 15,
-      height: 1.4,
-    ),
-  ),
-),
         ],
       ),
+
+    ],
+  ),
+),
+
+  ],
+),
     );
   }
 }

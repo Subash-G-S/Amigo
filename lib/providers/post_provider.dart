@@ -9,6 +9,7 @@ class PostProvider extends ChangeNotifier {
   final LikeService _likeService = LikeService();
 
   List<PostModel> posts = [];
+  List<PostModel> myPosts = [];
 
   bool loading = false;
 
@@ -41,4 +42,18 @@ class PostProvider extends ChangeNotifier {
       }
     }
   }
+  Future<void> loadMyPosts() async {
+    loading = true;
+    notifyListeners();
+
+  try {
+    myPosts = await _postService.getMyPosts();
+    print("Loaded ${myPosts.length} posts");
+  } catch (e) {
+    print("ERROR: $e");
+  } finally {
+    loading = false;
+    notifyListeners();
+  }
+}
 }
